@@ -11,12 +11,12 @@
   <xacro:property name="servo_velocity" value="5.8" />
 
   <!-- Joint limits in radians (TODO: Adjust per leg / mechanical stops if needed) -->
-  <xacro:property name="coxa_limit_lower" value="-1.05" />
-  <xacro:property name="coxa_limit_upper" value="1.05" />
-  <xacro:property name="femur_limit_lower" value="-1.05" />
-  <xacro:property name="femur_limit_upper" value="1.05" />
-  <xacro:property name="tibia_limit_lower" value="-2.09" />
-  <xacro:property name="tibia_limit_upper" value="0.52" />
+  <xacro:property name="coxa_limit_lower" value="-1.100" />
+  <xacro:property name="coxa_limit_upper" value="1.100" />
+  <xacro:property name="femur_limit_lower" value="-1.570" />
+  <xacro:property name="femur_limit_upper" value="1.570" />
+  <xacro:property name="tibia_limit_lower" value="-1.570" />
+  <xacro:property name="tibia_limit_upper" value="1.500" />
 
   <!-- ==================== LINKS ==================== -->
     <!-- Base footprint: Dummy root link without inertia to satisfy KDL parser / REP-120 -->
@@ -51,271 +51,10 @@
     </collision>
   </link>
 
-  <link name="leg_1_servo_1">
-    <inertial>
-    <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="-3e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.084941 -0.060877 0.0405" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
 
-  <link name="leg_1_coxa">
-    <inertial>
-    <origin xyz="0.019271814515711583 0.011506121197123007 -0.0176747963276034" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="-1e-06" iyz="0.0" ixz="1e-06"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.115181 -0.0665 0.00645" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="0.019271814515711583 0.011506121197123007 -0.0176747963276034" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive cylinder for DART physics engine compatibility -->
-        <cylinder radius="0.02" length="0.04"/>
-      </geometry>
-    </collision>
-  </link>
+  <!-- Leg 0 Links -->
 
-  <link name="leg_1_servo_2">
-    <inertial>
-    <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.163523 -0.072533 0.024454" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_1_femur">
-    <inertial>
-    <origin xyz="0.023710672139208133 0.032227566214572484 -0.010249651187755662" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
-    <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="-6e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.169111 -0.079454 0.014204" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="0.023710672139208133 0.032227566214572484 -0.010249651187755662" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.035 0.08 0.03"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_1_servo_3">
-    <inertial>
-    <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="0.0" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_1_tibia">
-    <inertial>
-    <origin xyz="0.02182951915430892 0.03458117524536303 -0.025800904379305854" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
-    <inertia ixx="0.000397" iyy="0.000411" izz="8.6e-05" ixy="-9e-06" iyz="1e-05" ixz="1.9e-05"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.241375 -0.117481 0.024454" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="0.02182951915430892 0.03458117524536303 -0.025800904379305854" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive cylinder for DART physics engine compatibility -->
-        <cylinder radius="0.012" length="0.12"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_servo_1">
-    <inertial>
-    <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.4e-05" iyy="8e-06" izz="1.2e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="0.01025 -0.104 0.0405" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_4.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_coxa">
-    <inertial>
-    <origin xyz="-0.0003288599116265486 0.022438964697677588 -0.017674983217111296" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="1e-06" iyz="1e-06" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.0 -0.133 0.00645" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="-0.0003288599116265486 0.022438964697677588 -0.017674983217111296" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive cylinder for DART physics engine compatibility -->
-        <cylinder radius="0.02" length="0.04"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_servo_2">
-    <inertial>
-    <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.018946 -0.177882 0.024454" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_5.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_femur">
-    <inertial>
-    <origin xyz="-0.016054052599303665 0.03664756482147061 -0.010249727909263035" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
-    <inertia ixx="6.2e-05" iyy="4.7e-05" izz="6.3e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.015746 -0.186182 0.014204" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="-0.016054052599303665 0.03664756482147061 -0.010249727909263035" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.035 0.08 0.03"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_servo_3">
-    <inertial>
-    <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
-    <visual>
-      <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_6.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="dark_grey"/>
-    </visual>
-        <collision>
-      <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_2_tibia">
-    <inertial>
-    <origin xyz="-0.019033271500222024 0.036196179731025624 -0.025801053863935716" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
-    <inertia ixx="0.000415" iyy="0.000392" izz="8.6e-05" ixy="-1e-06" iyz="2.2e-05" ixz="1e-06"/>
-      </inertial>
-    <visual>
-      <origin xyz="-0.018946 -0.267777 0.024454" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <material name="silver"/>
-    </visual>
-        <collision>
-      <origin xyz="-0.019033271500222024 0.036196179731025624 -0.025801053863935716" rpy="0 0 0"/>
-      <geometry>
-        <!-- Primitive cylinder for DART physics engine compatibility -->
-        <cylinder radius="0.012" length="0.12"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <link name="leg_3_servo_1">
+  <link name="leg_0_servo_1">
     <inertial>
     <origin xyz="-0.009271633947525254 0.01718405368564887 0.015621549828590188" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -324,7 +63,7 @@
     <visual>
       <origin xyz="0.095191 -0.043123 0.0405" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_7.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_0_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -337,7 +76,7 @@
     </collision>
   </link>
 
-  <link name="leg_3_coxa">
+  <link name="leg_0_coxa">
     <inertial>
     <origin xyz="-0.019600501055039216 0.01093682523915901 -0.01767479632760313" rpy="0 0 0"/>
     <mass value="0.09468983052437452"/>
@@ -346,7 +85,7 @@
     <visual>
       <origin xyz="0.115181 -0.0665 0.00645" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/coxa_0.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -359,7 +98,7 @@
     </collision>
   </link>
 
-  <link name="leg_3_servo_2">
+  <link name="leg_0_servo_2">
     <inertial>
     <origin xyz="-0.020130884446096703 -0.01011052932836827 4.417847544176817e-06" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -368,7 +107,7 @@
     <visual>
       <origin xyz="0.144577 -0.105349 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_8.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_0_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -381,7 +120,7 @@
     </collision>
   </link>
 
-  <link name="leg_3_femur">
+  <link name="leg_0_femur">
     <inertial>
     <origin xyz="-0.03976472073564474 0.004420016222259224 -0.010249651187754569" rpy="0 0 0"/>
     <mass value="0.20163169152331398"/>
@@ -390,7 +129,7 @@
     <visual>
       <origin xyz="0.153365 -0.106728 0.014204" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/femur_0.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -403,7 +142,7 @@
     </collision>
   </link>
 
-  <link name="leg_3_servo_3">
+  <link name="leg_0_servo_3">
     <inertial>
     <origin xyz="-0.2039187098150448 0.12140727588360294 -0.03470771848020927" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -412,7 +151,7 @@
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_9.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_0_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -425,7 +164,7 @@
     </collision>
   </link>
 
-  <link name="leg_3_tibia">
+  <link name="leg_0_tibia">
     <inertial>
     <origin xyz="-0.04086377748414741 0.0016140452126152671 -0.02580090437930371" rpy="0 0 0"/>
     <mass value="0.3465292165808174"/>
@@ -434,7 +173,7 @@
     <visual>
       <origin xyz="0.222428 -0.150297 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/tibia_0.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -447,7 +186,10 @@
     </collision>
   </link>
 
-  <link name="leg_4_servo_1">
+
+  <!-- Leg 1 Links -->
+
+  <link name="leg_1_servo_1">
     <inertial>
     <origin xyz="-0.019517566964905614 0.00056289910944686 0.015621549828590188" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -456,7 +198,7 @@
     <visual>
       <origin xyz="0.084941 0.060877 0.0405" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_10.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_1_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -469,7 +211,7 @@
     </collision>
   </link>
 
-  <link name="leg_4_coxa">
+  <link name="leg_1_coxa">
     <inertial>
     <origin xyz="-0.019271817845026434 -0.011506124242869606 -0.01767479632760313" rpy="0 0 0"/>
     <mass value="0.09468983052437452"/>
@@ -478,7 +220,7 @@
     <visual>
       <origin xyz="0.115181 0.0665 0.00645" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/coxa_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -491,7 +233,7 @@
     </collision>
   </link>
 
-  <link name="leg_4_servo_2">
+  <link name="leg_1_servo_2">
     <inertial>
     <origin xyz="-0.0013096867142398938 -0.02248930978668176 4.417847544176817e-06" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -500,7 +242,7 @@
     <visual>
       <origin xyz="0.163523 0.072533 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_11.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_1_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -513,7 +255,7 @@
     </collision>
   </link>
 
-  <link name="leg_4_femur">
+  <link name="leg_1_femur">
     <inertial>
     <origin xyz="-0.023710675468522874 -0.032227569260319 -0.010249651187754569" rpy="0 0 0"/>
     <mass value="0.20163169152331398"/>
@@ -522,7 +264,7 @@
     <visual>
       <origin xyz="0.169111 0.079454 0.014204" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/femur_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -535,7 +277,7 @@
     </collision>
   </link>
 
-  <link name="leg_4_servo_3">
+  <link name="leg_1_servo_3">
     <inertial>
     <origin xyz="-0.20404351208318788 -0.13399111499865288 -0.03470771848020927" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -544,7 +286,7 @@
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_12.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_1_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -557,7 +299,7 @@
     </collision>
   </link>
 
-  <link name="leg_4_tibia">
+  <link name="leg_1_tibia">
     <inertial>
     <origin xyz="-0.021829522483624075 -0.03458117829110971 -0.025800904379303696" rpy="0 0 0"/>
     <mass value="0.3465292165808174"/>
@@ -566,7 +308,7 @@
     <visual>
       <origin xyz="0.241375 0.117481 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/tibia_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -579,7 +321,10 @@
     </collision>
   </link>
 
-  <link name="leg_5_servo_1">
+
+  <!-- Leg 2 Links -->
+
+  <link name="leg_2_servo_1">
     <inertial>
     <origin xyz="-0.010245931216954272 -0.016621154932670704 0.015621549828590188" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -588,7 +333,7 @@
     <visual>
       <origin xyz="-0.01025 0.104 0.0405" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_13.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_2_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -601,7 +346,7 @@
     </collision>
   </link>
 
-  <link name="leg_5_coxa">
+  <link name="leg_2_coxa">
     <inertial>
     <origin xyz="0.00032886114760248894 -0.02243896802780443 -0.017674983217111296" rpy="0 0 0"/>
     <mass value="0.09468983052437452"/>
@@ -610,7 +355,7 @@
     <visual>
       <origin xyz="-0.0 0.133 0.00645" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/coxa_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -623,7 +368,7 @@
     </collision>
   </link>
 
-  <link name="leg_5_servo_2">
+  <link name="leg_2_servo_2">
     <inertial>
     <origin xyz="0.018821206298568875 -0.012378763130990594 4.370145855723401e-06" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -632,7 +377,7 @@
     <visual>
       <origin xyz="0.018946 0.177882 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_14.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_2_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -645,7 +390,7 @@
     </collision>
   </link>
 
-  <link name="leg_5_femur">
+  <link name="leg_2_femur">
     <inertial>
     <origin xyz="0.016054053835279563 -0.036647568151597476 -0.010249727909263052" rpy="0 0 0"/>
     <mass value="0.20163169152331398"/>
@@ -654,7 +399,7 @@
     <visual>
       <origin xyz="0.015746 0.186182 0.014204" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/femur_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -667,7 +412,7 @@
     </collision>
   </link>
 
-  <link name="leg_5_servo_3">
+  <link name="leg_2_servo_3">
     <inertial>
     <origin xyz="0.017075206301459818 -0.2617983735476185 -0.03470782452913071" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -676,7 +421,7 @@
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_15.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_2_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -689,7 +434,7 @@
     </collision>
   </link>
 
-  <link name="leg_5_tibia">
+  <link name="leg_2_tibia">
     <inertial>
     <origin xyz="0.019033272736197846 -0.03619618306115241 -0.025801053863935778" rpy="0 0 0"/>
     <mass value="0.3465292165808174"/>
@@ -698,7 +443,7 @@
     <visual>
       <origin xyz="0.018946 0.267777 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/tibia_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -711,7 +456,10 @@
     </collision>
   </link>
 
-  <link name="leg_6_servo_1">
+
+  <!-- Leg 3 Links -->
+
+  <link name="leg_3_servo_1">
     <inertial>
     <origin xyz="0.00927163102333349 -0.017184053391851466 0.015621549828590188" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -720,7 +468,7 @@
     <visual>
       <origin xyz="-0.095191 0.043123 0.0405" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_16.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_3_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -733,7 +481,7 @@
     </collision>
   </link>
 
-  <link name="leg_6_coxa">
+  <link name="leg_3_coxa">
     <inertial>
     <origin xyz="0.019597137850216134 -0.010934681500756951 -0.017674983217111296" rpy="0 0 0"/>
     <mass value="0.09468983052437452"/>
@@ -742,7 +490,7 @@
     <visual>
       <origin xyz="-0.115181 0.0665 0.00645" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/coxa_6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/coxa_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -755,7 +503,7 @@
     </collision>
   </link>
 
-  <link name="leg_6_servo_2">
+  <link name="leg_3_servo_2">
     <inertial>
     <origin xyz="0.020030869590435096 0.009937339243080004 4.370074793168255e-06" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -764,7 +512,7 @@
     <visual>
       <origin xyz="-0.144577 0.105349 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_17.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_3_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -777,7 +525,7 @@
     </collision>
   </link>
 
-  <link name="leg_6_femur">
+  <link name="leg_3_femur">
     <inertial>
     <origin xyz="0.03976470587753819 -0.004420206304466462 -0.01024972798032559" rpy="0 0 0"/>
     <mass value="0.20163169152331398"/>
@@ -786,7 +534,7 @@
     <visual>
       <origin xyz="-0.153265 0.106901 0.014204" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/femur_6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/femur_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -799,7 +547,7 @@
     </collision>
   </link>
 
-  <link name="leg_6_servo_3">
+  <link name="leg_3_servo_3">
     <inertial>
     <origin xyz="0.23821869495449424 -0.13438046596273023 -0.03470782460019323" rpy="0 0 0"/>
     <mass value="0.056162584370958224"/>
@@ -808,7 +556,7 @@
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/st3215_18.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/st3215_3_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark_grey"/>
     </visual>
@@ -821,7 +569,7 @@
     </collision>
   </link>
 
-  <link name="leg_6_tibia">
+  <link name="leg_3_tibia">
     <inertial>
     <origin xyz="0.04086374719457356 -0.001614215799724067 -0.02580105393499824" rpy="0 0 0"/>
     <mass value="0.3465292165808174"/>
@@ -830,7 +578,7 @@
     <visual>
       <origin xyz="-0.222328 0.15047 0.024454" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://hexapod_description/meshes/tibia_6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://hexapod_description/meshes/tibia_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="silver"/>
     </visual>
@@ -843,310 +591,562 @@
     </collision>
   </link>
 
+
+  <!-- Leg 4 Links -->
+
+  <link name="leg_4_servo_1">
+    <inertial>
+    <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="-3e-06" iyz="-0.0" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.084941 -0.060877 0.0405" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_4_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_4_coxa">
+    <inertial>
+    <origin xyz="0.019271814515711583 0.011506121197123007 -0.0176747963276034" rpy="0 0 0"/>
+    <mass value="0.09468983052437452"/>
+    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="-1e-06" iyz="0.0" ixz="1e-06"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.115181 -0.0665 0.00645" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/coxa_4.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="0.019271814515711583 0.011506121197123007 -0.0176747963276034" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive cylinder for DART physics engine compatibility -->
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_4_servo_2">
+    <inertial>
+    <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="-0.0" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.163523 -0.072533 0.024454" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_4_2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_4_femur">
+    <inertial>
+    <origin xyz="0.023710672139208133 0.032227566214572484 -0.010249651187755662" rpy="0 0 0"/>
+    <mass value="0.20163169152331398"/>
+    <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="-6e-06" iyz="-0.0" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.169111 -0.079454 0.014204" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/femur_4.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="0.023710672139208133 0.032227566214572484 -0.010249651187755662" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.035 0.08 0.03"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_4_servo_3">
+    <inertial>
+    <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="0.0" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_4_3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_4_tibia">
+    <inertial>
+    <origin xyz="0.02182951915430892 0.03458117524536303 -0.025800904379305854" rpy="0 0 0"/>
+    <mass value="0.3465292165808174"/>
+    <inertia ixx="0.000397" iyy="0.000411" izz="8.6e-05" ixy="-9e-06" iyz="1e-05" ixz="1.9e-05"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.241375 -0.117481 0.024454" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/tibia_4.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="0.02182951915430892 0.03458117524536303 -0.025800904379305854" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive cylinder for DART physics engine compatibility -->
+        <cylinder radius="0.012" length="0.12"/>
+      </geometry>
+    </collision>
+  </link>
+
+
+  <!-- Leg 5 Links -->
+
+  <link name="leg_5_servo_1">
+    <inertial>
+    <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="1.4e-05" iyy="8e-06" izz="1.2e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="0.01025 -0.104 0.0405" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_5_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_5_coxa">
+    <inertial>
+    <origin xyz="-0.0003288599116265486 0.022438964697677588 -0.017674983217111296" rpy="0 0 0"/>
+    <mass value="0.09468983052437452"/>
+    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="1e-06" iyz="1e-06" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.0 -0.133 0.00645" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/coxa_5.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="-0.0003288599116265486 0.022438964697677588 -0.017674983217111296" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive cylinder for DART physics engine compatibility -->
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_5_servo_2">
+    <inertial>
+    <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.018946 -0.177882 0.024454" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_5_2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_5_femur">
+    <inertial>
+    <origin xyz="-0.016054052599303665 0.03664756482147061 -0.010249727909263035" rpy="0 0 0"/>
+    <mass value="0.20163169152331398"/>
+    <inertia ixx="6.2e-05" iyy="4.7e-05" izz="6.3e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.015746 -0.186182 0.014204" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/femur_5.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="-0.016054052599303665 0.03664756482147061 -0.010249727909263035" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.035 0.08 0.03"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_5_servo_3">
+    <inertial>
+    <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
+    <mass value="0.056162584370958224"/>
+    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+      </inertial>
+    <visual>
+      <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/st3215_5_3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+        <collision>
+      <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive box for DART physics engine compatibility -->
+        <box size="0.045 0.025 0.035"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="leg_5_tibia">
+    <inertial>
+    <origin xyz="-0.019033271500222024 0.036196179731025624 -0.025801053863935716" rpy="0 0 0"/>
+    <mass value="0.3465292165808174"/>
+    <inertia ixx="0.000415" iyy="0.000392" izz="8.6e-05" ixy="-1e-06" iyz="2.2e-05" ixz="1e-06"/>
+      </inertial>
+    <visual>
+      <origin xyz="-0.018946 -0.267777 0.024454" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hexapod_description/meshes/tibia_5.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+        <collision>
+      <origin xyz="-0.019033271500222024 0.036196179731025624 -0.025801053863935716" rpy="0 0 0"/>
+      <geometry>
+        <!-- Primitive cylinder for DART physics engine compatibility -->
+        <cylinder radius="0.012" length="0.12"/>
+      </geometry>
+    </collision>
+  </link>
+
   <!-- ==================== JOINTS ==================== -->
 
+
+  <!-- Leg 0 Joints -->
+
+  <joint name="leg_0_base_to_servo_1_joint" type="fixed">
+    <origin xyz="-0.095191 0.043123 -0.0405" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="leg_0_servo_1"/>
+  </joint>
+
+  <joint name="leg_0_coxa_joint" type="revolute">
+    <origin xyz="-0.01999 0.023377 0.03405" rpy="0 0 0"/>
+    <parent link="leg_0_servo_1"/>
+    <child link="leg_0_coxa"/>
+    <axis xyz="-0.0 0.0 -1.0"/>
+    <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
+    <dynamics damping="0.05" friction="0.02"/>
+  </joint>
+
+  <joint name="leg_0_femur_joint" type="revolute">
+    <origin xyz="-0.029396 0.038849 -0.018004" rpy="0 0 0"/>
+    <parent link="leg_0_coxa"/>
+    <child link="leg_0_servo_2"/>
+    <axis xyz="0.5 0.866025 0.0"/>
+    <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
+    <dynamics damping="0.05" friction="0.02"/>
+  </joint>
+
+  <joint name="leg_0_servo_2_to_femur_joint" type="fixed">
+    <origin xyz="-0.008788 0.001379 0.01025" rpy="0 0 0"/>
+    <parent link="leg_0_servo_2"/>
+    <child link="leg_0_femur"/>
+  </joint>
+
+  <joint name="leg_0_femur_to_servo_3_joint" type="fixed">
+    <origin xyz="0.136165 -0.100328 0.024454" rpy="0 0 0"/>
+    <parent link="leg_0_femur"/>
+    <child link="leg_0_servo_3"/>
+  </joint>
+
+  <joint name="leg_0_tibia_joint" type="revolute">
+    <origin xyz="-0.205228 0.143897 -0.034704" rpy="0 0 0"/>
+    <parent link="leg_0_servo_3"/>
+    <child link="leg_0_tibia"/>
+    <axis xyz="-0.5 -0.866025 -0.0"/>
+    <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
+    <dynamics damping="0.05" friction="0.02"/>
+  </joint>
+
+
+  <!-- Leg 1 Joints -->
+
   <joint name="leg_1_base_to_servo_1_joint" type="fixed">
-    <origin xyz="0.084941 0.060877 -0.0405" rpy="0 0 0"/>
+    <origin xyz="-0.084941 -0.060877 -0.0405" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="leg_1_servo_1"/>
   </joint>
 
   <joint name="leg_1_coxa_joint" type="revolute">
-    <origin xyz="0.03024 0.005623 0.03405" rpy="0 0 0"/>
+    <origin xyz="-0.03024 -0.005623 0.03405" rpy="0 0 0"/>
     <parent link="leg_1_servo_1"/>
     <child link="leg_1_coxa"/>
-    <axis xyz="0.0 0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.0 -0.0 -1.0"/>
     <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_1_femur_joint" type="revolute">
-    <origin xyz="0.048342 0.006033 -0.018004" rpy="0 0 0"/>
+    <origin xyz="-0.048342 -0.006033 -0.018004" rpy="0 0 0"/>
     <parent link="leg_1_coxa"/>
     <child link="leg_1_servo_2"/>
-    <axis xyz="0.5 -0.866025 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.5 0.866025 0.0"/>
     <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_1_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="0.005588 0.006921 0.01025" rpy="0 0 0"/>
+    <origin xyz="-0.005588 -0.006921 0.01025" rpy="0 0 0"/>
     <parent link="leg_1_servo_2"/>
     <child link="leg_1_femur"/>
   </joint>
 
   <joint name="leg_1_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="-0.186311 -0.073054 0.024454" rpy="0 0 0"/>
+    <origin xyz="0.151911 0.085854 0.024454" rpy="0 0 0"/>
     <parent link="leg_1_femur"/>
     <child link="leg_1_servo_3"/>
   </joint>
 
   <joint name="leg_1_tibia_joint" type="revolute">
-    <origin xyz="0.258575 0.111081 -0.034704" rpy="0 0 0"/>
+    <origin xyz="-0.224175 -0.123881 -0.034704" rpy="0 0 0"/>
     <parent link="leg_1_servo_3"/>
     <child link="leg_1_tibia"/>
-    <axis xyz="-0.5 0.866025 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="0.5 -0.866025 -0.0"/>
     <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
+
+  <!-- Leg 2 Joints -->
+
   <joint name="leg_2_base_to_servo_1_joint" type="fixed">
-    <origin xyz="-0.01025 0.104 -0.0405" rpy="0 0 0"/>
+    <origin xyz="0.01025 -0.104 -0.0405" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="leg_2_servo_1"/>
   </joint>
 
   <joint name="leg_2_coxa_joint" type="revolute">
-    <origin xyz="0.01025 0.029 0.03405" rpy="0 0 0"/>
+    <origin xyz="-0.01025 -0.029 0.03405" rpy="0 0 0"/>
     <parent link="leg_2_servo_1"/>
     <child link="leg_2_coxa"/>
-    <axis xyz="-0.0 0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.0 -0.0 -1.0"/>
     <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_2_femur_joint" type="revolute">
-    <origin xyz="0.018946 0.044882 -0.018004" rpy="0 0 0"/>
+    <origin xyz="-0.018946 -0.044882 -0.018004" rpy="0 0 0"/>
     <parent link="leg_2_coxa"/>
     <child link="leg_2_servo_2"/>
-    <axis xyz="1.0 -0.0 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-1.0 0.0 -0.0"/>
     <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_2_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="-0.0032 0.0083 0.01025" rpy="0 0 0"/>
+    <origin xyz="0.0032 -0.0083 0.01025" rpy="0 0 0"/>
     <parent link="leg_2_servo_2"/>
     <child link="leg_2_femur"/>
   </joint>
 
   <joint name="leg_2_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="-0.032946 -0.179782 0.024454" rpy="0 0 0"/>
+    <origin xyz="-0.001454 0.192582 0.024454" rpy="0 0 0"/>
     <parent link="leg_2_femur"/>
     <child link="leg_2_servo_3"/>
   </joint>
 
   <joint name="leg_2_tibia_joint" type="revolute">
-    <origin xyz="0.036146 0.261377 -0.034704" rpy="0 0 0"/>
+    <origin xyz="-0.001746 -0.274177 -0.034704" rpy="0 0 0"/>
     <parent link="leg_2_servo_3"/>
     <child link="leg_2_tibia"/>
-    <axis xyz="-1.0 0.0 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="1.0 -0.0 0.0"/>
     <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
+
+  <!-- Leg 3 Joints -->
+
   <joint name="leg_3_base_to_servo_1_joint" type="fixed">
-    <origin xyz="-0.095191 0.043123 -0.0405" rpy="0 0 0"/>
+    <origin xyz="0.095191 -0.043123 -0.0405" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="leg_3_servo_1"/>
   </joint>
 
   <joint name="leg_3_coxa_joint" type="revolute">
-    <origin xyz="-0.01999 0.023377 0.03405" rpy="0 0 0"/>
+    <origin xyz="0.01999 -0.023377 0.03405" rpy="0 0 0"/>
     <parent link="leg_3_servo_1"/>
     <child link="leg_3_coxa"/>
-    <axis xyz="-0.0 0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="0.0 -0.0 -1.0"/>
     <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_3_femur_joint" type="revolute">
-    <origin xyz="-0.029396 0.038849 -0.018004" rpy="0 0 0"/>
+    <origin xyz="0.029396 -0.038849 -0.018004" rpy="0 0 0"/>
     <parent link="leg_3_coxa"/>
     <child link="leg_3_servo_2"/>
-    <axis xyz="0.5 0.866025 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.5 -0.866025 -0.0"/>
     <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_3_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="-0.008788 0.001379 0.01025" rpy="0 0 0"/>
+    <origin xyz="0.008688 -0.001552 0.01025" rpy="0 0 0"/>
     <parent link="leg_3_servo_2"/>
     <child link="leg_3_femur"/>
   </joint>
 
   <joint name="leg_3_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="0.136165 -0.100328 0.024454" rpy="0 0 0"/>
+    <origin xyz="-0.170465 0.113301 0.024454" rpy="0 0 0"/>
     <parent link="leg_3_femur"/>
     <child link="leg_3_servo_3"/>
   </joint>
 
   <joint name="leg_3_tibia_joint" type="revolute">
-    <origin xyz="-0.205228 0.143897 -0.034704" rpy="0 0 0"/>
+    <origin xyz="0.239528 -0.15687 -0.034704" rpy="0 0 0"/>
     <parent link="leg_3_servo_3"/>
     <child link="leg_3_tibia"/>
-    <axis xyz="-0.5 -0.866025 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="0.5 0.866025 0.0"/>
     <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
+
+  <!-- Leg 4 Joints -->
+
   <joint name="leg_4_base_to_servo_1_joint" type="fixed">
-    <origin xyz="-0.084941 -0.060877 -0.0405" rpy="0 0 0"/>
+    <origin xyz="0.084941 0.060877 -0.0405" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="leg_4_servo_1"/>
   </joint>
 
   <joint name="leg_4_coxa_joint" type="revolute">
-    <origin xyz="-0.03024 -0.005623 0.03405" rpy="0 0 0"/>
+    <origin xyz="0.03024 0.005623 0.03405" rpy="0 0 0"/>
     <parent link="leg_4_servo_1"/>
     <child link="leg_4_coxa"/>
-    <axis xyz="-0.0 -0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="0.0 0.0 -1.0"/>
     <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_4_femur_joint" type="revolute">
-    <origin xyz="-0.048342 -0.006033 -0.018004" rpy="0 0 0"/>
+    <origin xyz="0.048342 0.006033 -0.018004" rpy="0 0 0"/>
     <parent link="leg_4_coxa"/>
     <child link="leg_4_servo_2"/>
-    <axis xyz="-0.5 0.866025 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="0.5 -0.866025 0.0"/>
     <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_4_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="-0.005588 -0.006921 0.01025" rpy="0 0 0"/>
+    <origin xyz="0.005588 0.006921 0.01025" rpy="0 0 0"/>
     <parent link="leg_4_servo_2"/>
     <child link="leg_4_femur"/>
   </joint>
 
   <joint name="leg_4_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="0.151911 0.085854 0.024454" rpy="0 0 0"/>
+    <origin xyz="-0.186311 -0.073054 0.024454" rpy="0 0 0"/>
     <parent link="leg_4_femur"/>
     <child link="leg_4_servo_3"/>
   </joint>
 
   <joint name="leg_4_tibia_joint" type="revolute">
-    <origin xyz="-0.224175 -0.123881 -0.034704" rpy="0 0 0"/>
+    <origin xyz="0.258575 0.111081 -0.034704" rpy="0 0 0"/>
     <parent link="leg_4_servo_3"/>
     <child link="leg_4_tibia"/>
-    <axis xyz="0.5 -0.866025 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.5 0.866025 -0.0"/>
     <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
+
+  <!-- Leg 5 Joints -->
+
   <joint name="leg_5_base_to_servo_1_joint" type="fixed">
-    <origin xyz="0.01025 -0.104 -0.0405" rpy="0 0 0"/>
+    <origin xyz="-0.01025 0.104 -0.0405" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="leg_5_servo_1"/>
   </joint>
 
   <joint name="leg_5_coxa_joint" type="revolute">
-    <origin xyz="-0.01025 -0.029 0.03405" rpy="0 0 0"/>
+    <origin xyz="0.01025 0.029 0.03405" rpy="0 0 0"/>
     <parent link="leg_5_servo_1"/>
     <child link="leg_5_coxa"/>
-    <axis xyz="-0.0 -0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-0.0 0.0 -1.0"/>
     <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_5_femur_joint" type="revolute">
-    <origin xyz="-0.018946 -0.044882 -0.018004" rpy="0 0 0"/>
+    <origin xyz="0.018946 0.044882 -0.018004" rpy="0 0 0"/>
     <parent link="leg_5_coxa"/>
     <child link="leg_5_servo_2"/>
-    <axis xyz="-1.0 0.0 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="1.0 -0.0 -0.0"/>
     <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>
 
   <joint name="leg_5_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="0.0032 -0.0083 0.01025" rpy="0 0 0"/>
+    <origin xyz="-0.0032 0.0083 0.01025" rpy="0 0 0"/>
     <parent link="leg_5_servo_2"/>
     <child link="leg_5_femur"/>
   </joint>
 
   <joint name="leg_5_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="-0.001454 0.192582 0.024454" rpy="0 0 0"/>
+    <origin xyz="-0.032946 -0.179782 0.024454" rpy="0 0 0"/>
     <parent link="leg_5_femur"/>
     <child link="leg_5_servo_3"/>
   </joint>
 
   <joint name="leg_5_tibia_joint" type="revolute">
-    <origin xyz="-0.001746 -0.274177 -0.034704" rpy="0 0 0"/>
+    <origin xyz="0.036146 0.261377 -0.034704" rpy="0 0 0"/>
     <parent link="leg_5_servo_3"/>
     <child link="leg_5_tibia"/>
-    <axis xyz="1.0 -0.0 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
-    <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
-    <dynamics damping="0.05" friction="0.02"/>
-  </joint>
-
-  <joint name="leg_6_base_to_servo_1_joint" type="fixed">
-    <origin xyz="0.095191 -0.043123 -0.0405" rpy="0 0 0"/>
-    <parent link="base_link"/>
-    <child link="leg_6_servo_1"/>
-  </joint>
-
-  <joint name="leg_6_coxa_joint" type="revolute">
-    <origin xyz="0.01999 -0.023377 0.03405" rpy="0 0 0"/>
-    <parent link="leg_6_servo_1"/>
-    <child link="leg_6_coxa"/>
-    <axis xyz="0.0 -0.0 -1.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
-    <limit lower="${coxa_limit_lower}" upper="${coxa_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
-    <dynamics damping="0.05" friction="0.02"/>
-  </joint>
-
-  <joint name="leg_6_femur_joint" type="revolute">
-    <origin xyz="0.029396 -0.038849 -0.018004" rpy="0 0 0"/>
-    <parent link="leg_6_coxa"/>
-    <child link="leg_6_servo_2"/>
-    <axis xyz="-0.5 -0.866025 -0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
-    <limit lower="${femur_limit_lower}" upper="${femur_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
-    <dynamics damping="0.05" friction="0.02"/>
-  </joint>
-
-  <joint name="leg_6_servo_2_to_femur_joint" type="fixed">
-    <origin xyz="0.008688 -0.001552 0.01025" rpy="0 0 0"/>
-    <parent link="leg_6_servo_2"/>
-    <child link="leg_6_femur"/>
-  </joint>
-
-  <joint name="leg_6_femur_to_servo_3_joint" type="fixed">
-    <origin xyz="-0.170465 0.113301 0.024454" rpy="0 0 0"/>
-    <parent link="leg_6_femur"/>
-    <child link="leg_6_servo_3"/>
-  </joint>
-
-  <joint name="leg_6_tibia_joint" type="revolute">
-    <origin xyz="0.239528 -0.15687 -0.034704" rpy="0 0 0"/>
-    <parent link="leg_6_servo_3"/>
-    <child link="leg_6_tibia"/>
-    <axis xyz="0.5 0.866025 0.0"/>
-    <!-- Feetech STS3215-C018 limits (effort ~3.0 N.m, max velocity ~5.8 rad/s) -->
-    <!-- TODO: Adjust lower and upper angle limits according to physical robot range of motion -->
+    <axis xyz="-1.0 0.0 0.0"/>
     <limit lower="${tibia_limit_lower}" upper="${tibia_limit_upper}" effort="${servo_effort}" velocity="${servo_velocity}"/>
     <dynamics damping="0.05" friction="0.02"/>
   </joint>

@@ -14,264 +14,196 @@
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <parameters>$(find hexapod_description)/config/hexapod_controllers.yaml</parameters>
     </plugin>
-    
   </gazebo>
+
   <gazebo reference="base_link">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
     <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 0 Gazebo Properties -->
+  <gazebo reference="leg_0_servo_1">
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_0_coxa">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_0_servo_2">
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_0_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_0_servo_3">
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_0_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 1 Gazebo Properties -->
+  <gazebo reference="leg_1_servo_1">
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_1_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_1_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_1_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_2_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_2_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_2_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_3_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_3_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_3_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_4_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_4_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_4_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_5_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_5_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_5_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_6_coxa">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_6_femur">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_6_tibia">
-    <mu1>1.5</mu1>
-    <mu2>1.5</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_1_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_1_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_1_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_1_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
     <self_collide>false</self_collide>
   </gazebo>
 
+  <gazebo reference="leg_1_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 2 Gazebo Properties -->
   <gazebo reference="leg_2_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_2_coxa">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_2_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_2_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_2_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
     <self_collide>false</self_collide>
   </gazebo>
 
+  <gazebo reference="leg_2_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 3 Gazebo Properties -->
   <gazebo reference="leg_3_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_3_coxa">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_3_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_3_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_3_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
     <self_collide>false</self_collide>
   </gazebo>
 
+  <gazebo reference="leg_3_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 4 Gazebo Properties -->
   <gazebo reference="leg_4_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_4_coxa">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_4_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_4_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_4_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
     <self_collide>false</self_collide>
   </gazebo>
 
+  <gazebo reference="leg_4_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <!-- Leg 5 Gazebo Properties -->
   <gazebo reference="leg_5_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_5_coxa">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_5_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+    <self_collide>false</self_collide>
+  </gazebo>
+
+  <gazebo reference="leg_5_femur">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 
   <gazebo reference="leg_5_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
     <self_collide>false</self_collide>
   </gazebo>
 
-  <gazebo reference="leg_6_servo_1">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_6_servo_2">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
-    <self_collide>false</self_collide>
-  </gazebo>
-
-  <gazebo reference="leg_6_servo_3">
-    <mu1>0.2</mu1>
-    <mu2>0.2</mu2>
-    <!-- self_collide disabled by default to prevent mesh-mesh penetration explosion in Gazebo/RL -->
+  <gazebo reference="leg_5_tibia">
+    <mu1>0.35</mu1>
+    <mu2>0.35</mu2>
     <self_collide>false</self_collide>
   </gazebo>
 </robot>

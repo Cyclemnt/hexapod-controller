@@ -26,12 +26,12 @@
         <xacro:leg_joint_control leg_id="${leg_num}" joint_name="leg_${leg_num}_tibia_joint"/>
       </xacro:macro>
 
+      <xacro:leg_control leg_num="0"/>
       <xacro:leg_control leg_num="1"/>
       <xacro:leg_control leg_num="2"/>
       <xacro:leg_control leg_num="3"/>
       <xacro:leg_control leg_num="4"/>
       <xacro:leg_control leg_num="5"/>
-      <xacro:leg_control leg_num="6"/>
     </ros2_control>
   </xacro:macro>
 

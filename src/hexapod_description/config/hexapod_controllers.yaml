@@ -11,6 +11,9 @@ controller_manager:
 joint_trajectory_controller:
   ros__parameters:
     joints:
+      - leg_0_coxa_joint
+      - leg_0_femur_joint
+      - leg_0_tibia_joint
       - leg_1_coxa_joint
       - leg_1_femur_joint
       - leg_1_tibia_joint
@@ -26,9 +29,6 @@ joint_trajectory_controller:
       - leg_5_coxa_joint
       - leg_5_femur_joint
       - leg_5_tibia_joint
-      - leg_6_coxa_joint
-      - leg_6_femur_joint
-      - leg_6_tibia_joint
 
     command_interfaces:
       - position

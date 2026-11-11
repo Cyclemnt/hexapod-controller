@@ -13,19 +13,17 @@ ROS 2 robot description package for a biomimetic 18-DOF hexapod robot powered by
 
 ## Kinematic & Naming Conventions
 
-All joints and links follow standard international biomimetic robotics conventions in English `snake_case`:
-
 ### Leg Identification
 | Leg Index | Location | Coxa Joint (Yaw) | Femur Joint (Pitch) | Tibia Joint (Pitch) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Leg 1** | Front-Left (LF) | `leg_1_coxa_joint` | `leg_1_femur_joint` | `leg_1_tibia_joint` |
-| **Leg 2** | Middle-Left (LM) | `leg_2_coxa_joint` | `leg_2_femur_joint` | `leg_2_tibia_joint` |
-| **Leg 3** | Rear-Left (LR) | `leg_3_coxa_joint` | `leg_3_femur_joint` | `leg_3_tibia_joint` |
-| **Leg 4** | Rear-Right (RR) | `leg_4_coxa_joint` | `leg_4_femur_joint` | `leg_4_tibia_joint` |
-| **Leg 5** | Middle-Right (RM) | `leg_5_coxa_joint` | `leg_5_femur_joint` | `leg_5_tibia_joint` |
-| **Leg 6** | Front-Right (RF) | `leg_6_coxa_joint` | `leg_6_femur_joint` | `leg_6_tibia_joint` |
+| **Leg 0** | Front-Left (LF) | `leg_0_coxa_joint` | `leg_0_femur_joint` | `leg_0_tibia_joint` |
+| **Leg 1** | Middle-Left (LM) | `leg_1_coxa_joint` | `leg_1_femur_joint` | `leg_1_tibia_joint` |
+| **Leg 2** | Rear-Left (LR) | `leg_2_coxa_joint` | `leg_2_femur_joint` | `leg_2_tibia_joint` |
+| **Leg 3** | Rear-Right (RR) | `leg_3_coxa_joint` | `leg_3_femur_joint` | `leg_3_tibia_joint` |
+| **Leg 4** | Middle-Right (RM) | `leg_4_coxa_joint` | `leg_4_femur_joint` | `leg_4_tibia_joint` |
+| **Leg 5** | Front-Right (RF) | `leg_5_coxa_joint` | `leg_5_femur_joint` | `leg_5_tibia_joint` |
 
-### Link Hierarchy per Leg $i \in \{1..6\}$
+### Link Hierarchy per Leg $i \in \{0..5\}$
 - `base_footprint` (Root frame on ground / REP-120 compliant)
   - `base_link` (Main chassis with real mass and inertia)
     - `leg_i_servo_1` (Fixed to `base_link`)
@@ -88,11 +86,3 @@ Check loaded controllers:
 ros2 control list_controllers
 ```
 
----
-
-## Next Steps / TODOs
-
-- [ ] **Physical Mass & Inertia:** Measure the real mass and center of gravity of the chassis to update `base_link` in `urdf/hexapod.xacro`.
-- [ ] **Mechanical Angle Limits:** Refine `coxa_limit_lower/upper`, `femur_limit_lower/upper`, and `tibia_limit_lower/upper` in `urdf/hexapod.xacro` based on mechanical stops.
-- [ ] **Foot Contact Points:** Add virtual tip/foot frames (`leg_i_foot`) at the bottom of each tibia for inverse kinematics and ground contact detection.
-- [ ] **Reinforcement Learning:** Train locomotion policies directly in Isaac Gym, Isaac Lab or MuJoCo using the clean URDF and DART collision primitives.
