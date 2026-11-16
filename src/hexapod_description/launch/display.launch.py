@@ -1,11 +1,11 @@
-from launch_ros.actions import Node
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch.conditions import IfCondition, UnlessCondition
-import xacro
 import os
 from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition, UnlessCondition
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
+import xacro
 
 
 def generate_launch_description():
@@ -19,7 +19,8 @@ def generate_launch_description():
 
     gui_arg = DeclareLaunchArgument(
         name='gui',
-        default_value='True'
+        default_value='True',
+        description='Flag to enable joint_state_publisher_gui'
     )
 
     show_gui = LaunchConfiguration('gui')
@@ -28,9 +29,8 @@ def generate_launch_description():
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
-        parameters=[
-            {'robot_description': robot_urdf}
-        ]
+        output='screen',
+        parameters=[{'robot_description': robot_urdf}]
     )
 
     joint_state_publisher_node = Node(

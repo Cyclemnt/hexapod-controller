@@ -1,12 +1,16 @@
+
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     AppendEnvironmentVariable,
+    DeclareLaunchArgument,
     IncludeLaunchDescription,
     TimerAction,
 )
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import xacro
 
@@ -28,6 +32,13 @@ def generate_launch_description():
         name='IGN_GAZEBO_RESOURCE_PATH',
         value=install_share_dir
     )
+
+    controllers_arg = DeclareLaunchArgument(
+        name='load_controllers',
+        default_value='true',
+        description='Whether to automatically spawn ros2_control controllers'
+    )
+    load_controllers = LaunchConfiguration('load_controllers')
 
     robot_description_file = os.path.join(pkg_hexapod_description, 'urdf', 'hexapod.xacro')
     ros_gz_bridge_config = os.path.join(pkg_hexapod_description, 'config', 'ros_gz_bridge_gazebo.yaml')
@@ -70,6 +81,34 @@ def generate_launch_description():
         ]
     )
 
+    # Automatically load ros2_control controllers after the robot is spawned
+    load_joint_state_broadcaster = TimerAction(
+        period=5.0,
+        actions=[
+            Node(
+                condition=IfCondition(load_controllers),
+                package='controller_manager',
+                executable='spawner',
+                arguments=['joint_state_broadcaster'],
+                output='screen',
+            )
+        ]
+    )
+
+    # Controller not used yet: enable this block when you configure it
+    # load_joint_trajectory_controller = TimerAction(
+    #     period=6.0,
+    #     actions=[
+    #         Node(
+    #             condition=IfCondition(load_controllers),
+    #             package='controller_manager',
+    #             executable='spawner',
+    #             arguments=['joint_trajectory_controller'],
+    #             output='screen',
+    #         )
+    #     ]
+    # )
+
     ros_gz_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -80,8 +119,11 @@ def generate_launch_description():
     return LaunchDescription([
         gz_resource_path,
         ign_resource_path,
+        controllers_arg,
         gazebo,
         spawn_robot,
         ros_gz_bridge,
         robot_state_publisher,
+        load_joint_state_broadcaster,
+        # load_joint_trajectory_controller,
     ])
