@@ -32,7 +32,7 @@
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
       <!-- TODO: Replace with measured/calculated base_link mass and inertia matrix -->
-      <mass value="1.5"/>
+      <mass value="1.820"/>
       <inertia ixx="0.005" iyy="0.005" izz="0.01" ixy="0.0" iyz="0.0" ixz="0.0"/>
     </inertial>
     <visual>
@@ -56,10 +56,10 @@
 
   <link name="leg_0_servo_1">
     <inertial>
-    <origin xyz="-0.009271633947525254 0.01718405368564887 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="3e-06" iyz="-0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.009 0.017 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.095191 -0.043123 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -67,11 +67,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.009271633947525254 0.01718405368564887 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.009 0.017 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -79,8 +78,8 @@
   <link name="leg_0_coxa">
     <inertial>
     <origin xyz="-0.019600501055039216 0.01093682523915901 -0.01767479632760313" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.4e-05" iyy="2.6e-05" izz="2.5e-05" ixy="0.0" iyz="0.0" ixz="-1e-06"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="0.115181 -0.0665 0.00645" rpy="0 0 0"/>
@@ -100,10 +99,10 @@
 
   <link name="leg_0_servo_2">
     <inertial>
-    <origin xyz="-0.020130884446096703 -0.01011052932836827 4.417847544176817e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="2e-06" iyz="0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.020 -0.010 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.144577 -0.105349 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -111,11 +110,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.020130884446096703 -0.01011052932836827 4.417847544176817e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.020 -0.010 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -123,7 +121,7 @@
   <link name="leg_0_femur">
     <inertial>
     <origin xyz="-0.03976472073564474 0.004420016222259224 -0.010249651187754569" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="6e-06" iyz="-0.0" ixz="0.0"/>
       </inertial>
     <visual>
@@ -144,10 +142,10 @@
 
   <link name="leg_0_servo_3">
     <inertial>
-    <origin xyz="-0.2039187098150448 0.12140727588360294 -0.03470771848020927" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="2e-06" iyz="-0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.204 0.121 -0.035" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -155,11 +153,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.2039187098150448 0.12140727588360294 -0.03470771848020927" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.204 0.121 -0.035" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -167,7 +164,7 @@
   <link name="leg_0_tibia">
     <inertial>
     <origin xyz="-0.04086377748414741 0.0016140452126152671 -0.02580090437930371" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.020"/>
     <inertia ixx="0.000399" iyy="0.000409" izz="8.6e-05" ixy="1.1e-05" iyz="1.2e-05" ixz="-1.8e-05"/>
       </inertial>
     <visual>
@@ -191,10 +188,10 @@
 
   <link name="leg_1_servo_1">
     <inertial>
-    <origin xyz="-0.019517566964905614 0.00056289910944686 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="-3e-06" iyz="0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.020 0.001 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.084941 0.060877 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -202,11 +199,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.019517566964905614 0.00056289910944686 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.020 0.001 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -214,8 +210,8 @@
   <link name="leg_1_coxa">
     <inertial>
     <origin xyz="-0.019271817845026434 -0.011506124242869606 -0.01767479632760313" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="-1e-06" iyz="-0.0" ixz="-1e-06"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="0.115181 0.0665 0.00645" rpy="0 0 0"/>
@@ -235,10 +231,10 @@
 
   <link name="leg_1_servo_2">
     <inertial>
-    <origin xyz="-0.0013096867142398938 -0.02248930978668176 4.417847544176817e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.001 -0.022 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.163523 0.072533 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -246,11 +242,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.0013096867142398938 -0.02248930978668176 4.417847544176817e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.001 -0.022 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -258,7 +253,7 @@
   <link name="leg_1_femur">
     <inertial>
     <origin xyz="-0.023710675468522874 -0.032227569260319 -0.010249651187754569" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="-6e-06" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
@@ -279,10 +274,10 @@
 
   <link name="leg_1_servo_3">
     <inertial>
-    <origin xyz="-0.20404351208318788 -0.13399111499865288 -0.03470771848020927" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="-0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.204 -0.134 -0.035" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -290,11 +285,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.20404351208318788 -0.13399111499865288 -0.03470771848020927" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.204 -0.134 -0.035" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -302,7 +296,7 @@
   <link name="leg_1_tibia">
     <inertial>
     <origin xyz="-0.021829522483624075 -0.03458117829110971 -0.025800904379303696" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.020"/>
     <inertia ixx="0.000397" iyy="0.000411" izz="8.6e-05" ixy="-9e-06" iyz="-1e-05" ixz="-1.9e-05"/>
       </inertial>
     <visual>
@@ -326,10 +320,10 @@
 
   <link name="leg_2_servo_1">
     <inertial>
-    <origin xyz="-0.010245931216954272 -0.016621154932670704 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.4e-05" iyy="8e-06" izz="1.2e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="-0.010 -0.017 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.01025 0.104 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -337,11 +331,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.010245931216954272 -0.016621154932670704 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.010 -0.017 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -349,8 +342,8 @@
   <link name="leg_2_coxa">
     <inertial>
     <origin xyz="0.00032886114760248894 -0.02243896802780443 -0.017674983217111296" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="1e-06" iyz="-1e-06" ixz="0.0"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="-0.0 0.133 0.00645" rpy="0 0 0"/>
@@ -370,10 +363,10 @@
 
   <link name="leg_2_servo_2">
     <inertial>
-    <origin xyz="0.018821206298568875 -0.012378763130990594 4.370145855723401e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.019 -0.012 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.018946 0.177882 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -381,11 +374,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.018821206298568875 -0.012378763130990594 4.370145855723401e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.019 -0.012 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -393,7 +385,7 @@
   <link name="leg_2_femur">
     <inertial>
     <origin xyz="0.016054053835279563 -0.036647568151597476 -0.010249727909263052" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="6.2e-05" iyy="4.7e-05" izz="6.3e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
       </inertial>
     <visual>
@@ -414,10 +406,10 @@
 
   <link name="leg_2_servo_3">
     <inertial>
-    <origin xyz="0.017075206301459818 -0.2617983735476185 -0.03470782452913071" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="0.0" iyz="0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="0.017 -0.262 -0.035" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -425,11 +417,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.017075206301459818 -0.2617983735476185 -0.03470782452913071" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.017 -0.262 -0.035" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -437,7 +428,7 @@
   <link name="leg_2_tibia">
     <inertial>
     <origin xyz="0.019033272736197846 -0.03619618306115241 -0.025801053863935778" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.020"/>
     <inertia ixx="0.000415" iyy="0.000392" izz="8.6e-05" ixy="-1e-06" iyz="-2.2e-05" ixz="-1e-06"/>
       </inertial>
     <visual>
@@ -461,10 +452,10 @@
 
   <link name="leg_3_servo_1">
     <inertial>
-    <origin xyz="0.00927163102333349 -0.017184053391851466 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="3e-06" iyz="0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.009 -0.017 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.095191 0.043123 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -472,11 +463,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.00927163102333349 -0.017184053391851466 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.009 -0.017 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -484,8 +474,8 @@
   <link name="leg_3_coxa">
     <inertial>
     <origin xyz="0.019597137850216134 -0.010934681500756951 -0.017674983217111296" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.4e-05" iyy="2.6e-05" izz="2.5e-05" ixy="0.0" iyz="-0.0" ixz="1e-06"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="-0.115181 0.0665 0.00645" rpy="0 0 0"/>
@@ -505,10 +495,10 @@
 
   <link name="leg_3_servo_2">
     <inertial>
-    <origin xyz="0.020030869590435096 0.009937339243080004 4.370074793168255e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="2e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.020 0.010 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.144577 0.105349 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -516,11 +506,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.020030869590435096 0.009937339243080004 4.370074793168255e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.020 0.010 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -528,7 +517,7 @@
   <link name="leg_3_femur">
     <inertial>
     <origin xyz="0.03976470587753819 -0.004420206304466462 -0.01024972798032559" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="6e-06" iyz="0.0" ixz="-0.0"/>
       </inertial>
     <visual>
@@ -549,10 +538,10 @@
 
   <link name="leg_3_servo_3">
     <inertial>
-    <origin xyz="0.23821869495449424 -0.13438046596273023 -0.03470782460019323" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="2e-06" iyz="0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.238 -0.134 -0.035" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -560,11 +549,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.23821869495449424 -0.13438046596273023 -0.03470782460019323" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.238 -0.134 -0.035" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -572,7 +560,7 @@
   <link name="leg_3_tibia">
     <inertial>
     <origin xyz="0.04086374719457356 -0.001614215799724067 -0.02580105393499824" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.20"/>
     <inertia ixx="0.000399" iyy="0.000409" izz="8.6e-05" ixy="1.1e-05" iyz="-1.2e-05" ixz="1.8e-05"/>
       </inertial>
     <visual>
@@ -596,10 +584,10 @@
 
   <link name="leg_4_servo_1">
     <inertial>
-    <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.3e-05" izz="1.2e-05" ixy="-3e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.020 -0.001 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.084941 -0.060877 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -607,11 +595,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.019517563635590998 -0.0005629021551933414 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.020 -0.001 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -619,8 +606,8 @@
   <link name="leg_4_coxa">
     <inertial>
     <origin xyz="0.019271814515711583 0.011506121197123007 -0.0176747963276034" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="-1e-06" iyz="0.0" ixz="1e-06"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="-0.115181 -0.0665 0.00645" rpy="0 0 0"/>
@@ -640,10 +627,10 @@
 
   <link name="leg_4_servo_2">
     <inertial>
-    <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.001 0.022 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.163523 -0.072533 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -651,11 +638,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.0013096833849250422 0.022489306740935203 4.417847543479458e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.001 0.022 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -663,7 +649,7 @@
   <link name="leg_4_femur">
     <inertial>
     <origin xyz="0.023710672139208133 0.032227566214572484 -0.010249651187755662" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="5.1e-05" iyy="5.8e-05" izz="6.3e-05" ixy="-6e-06" iyz="-0.0" ixz="-0.0"/>
       </inertial>
     <visual>
@@ -684,10 +670,10 @@
 
   <link name="leg_4_servo_3">
     <inertial>
-    <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="9e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-2e-06" iyz="0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="0.238 0.121 -0.035" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -695,11 +681,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.23844350875387313 0.12119111195290634 -0.03470771848021077" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.238 0.121 -0.035" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -707,7 +692,7 @@
   <link name="leg_4_tibia">
     <inertial>
     <origin xyz="0.02182951915430892 0.03458117524536303 -0.025800904379305854" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.20"/>
     <inertia ixx="0.000397" iyy="0.000411" izz="8.6e-05" ixy="-9e-06" iyz="1e-05" ixz="1.9e-05"/>
       </inertial>
     <visual>
@@ -731,10 +716,10 @@
 
   <link name="leg_5_servo_1">
     <inertial>
-    <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.4e-05" iyy="8e-06" izz="1.2e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="0.010 0.017 0.016" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.01025 -0.104 0.0405" rpy="0 0 0"/>
       <geometry>
@@ -742,11 +727,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.010245932452930227 0.016621151602543863 0.015621549828590188" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.010 0.017 0.016" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -754,8 +738,8 @@
   <link name="leg_5_coxa">
     <inertial>
     <origin xyz="-0.0003288599116265486 0.022438964697677588 -0.017674983217111296" rpy="0 0 0"/>
-    <mass value="0.09468983052437452"/>
-    <inertia ixx="2.5e-05" iyy="2.5e-05" izz="2.5e-05" ixy="1e-06" iyz="1e-06" ixz="-0.0"/>
+    <mass value="0.0055"/>
+    <inertia ixx="1.41e-06" iyy="1.46e-06" izz="1.45e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
       </inertial>
     <visual>
       <origin xyz="-0.0 -0.133 0.00645" rpy="0 0 0"/>
@@ -775,10 +759,10 @@
 
   <link name="leg_5_servo_2">
     <inertial>
-    <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-      </inertial>
+      <origin xyz="-0.019 0.012 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="-0.018946 -0.177882 0.024454" rpy="0 0 0"/>
       <geometry>
@@ -786,11 +770,10 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="-0.018821205062592956 0.012378759800863781 4.370145855723401e-06" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.019 0.012 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -798,7 +781,7 @@
   <link name="leg_5_femur">
     <inertial>
     <origin xyz="-0.016054052599303665 0.03664756482147061 -0.010249727909263035" rpy="0 0 0"/>
-    <mass value="0.20163169152331398"/>
+    <mass value="0.0115"/>
     <inertia ixx="6.2e-05" iyy="4.7e-05" izz="6.3e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
       </inertial>
     <visual>
@@ -819,10 +802,10 @@
 
   <link name="leg_5_servo_3">
     <inertial>
-    <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
-    <mass value="0.056162584370958224"/>
-    <inertia ixx="1.2e-05" iyy="8e-06" izz="1.4e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
-      </inertial>
+      <origin xyz="-0.013 -0.009 0.0" rpy="0 0 0"/>
+      <mass value="0.056"/>
+      <inertia ixx="7.55e-06" iyy="1.21e-05" izz="1.42e-05" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
     <visual>
       <origin xyz="0.0172 -0.0064 -0.01025" rpy="0 0 0"/>
       <geometry>
@@ -830,11 +813,11 @@
       </geometry>
       <material name="dark_grey"/>
     </visual>
-        <collision>
-      <origin xyz="0.017324794934516028 0.24899837021749174 -0.03470782452913068" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="-0.013 -0.009 0.0" rpy="0 0 0"/>
       <geometry>
-        <!-- Primitive box for DART physics engine compatibility -->
-        <box size="0.045 0.025 0.035"/>
+        <!-- Primitive TODO: verify -->
+        <box size="0.045 0.035 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -842,7 +825,7 @@
   <link name="leg_5_tibia">
     <inertial>
     <origin xyz="-0.019033271500222024 0.036196179731025624 -0.025801053863935716" rpy="0 0 0"/>
-    <mass value="0.3465292165808174"/>
+    <mass value="0.020"/>
     <inertia ixx="0.000415" iyy="0.000392" izz="8.6e-05" ixy="-1e-06" iyz="2.2e-05" ixz="1e-06"/>
       </inertial>
     <visual>
