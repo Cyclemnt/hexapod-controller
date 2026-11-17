@@ -8,7 +8,7 @@
 
   <!-- Actuator characteristics (Feetech STS3215-C018) -->
   <xacro:property name="servo_effort" value="3.0" />
-  <xacro:property name="servo_velocity" value="5.8" />
+  <xacro:property name="servo_velocity" value="4.7" />
 
   <!-- Joint limits in radians -->
   <xacro:property name="coxa_limit_lower" value="-1.100" />

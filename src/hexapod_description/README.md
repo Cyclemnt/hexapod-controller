@@ -5,7 +5,7 @@ ROS 2 robot description package for a biomimetic 18-DOF hexapod robot powered by
 ## Overview
 
 - **Robot Type:** 18-DOF Hexapod (6 legs $\times$ 3 joints: Coxa, Femur, Tibia)
-- **Actuators:** Feetech STS3215-C018 (Stall Torque: ~3.0 N·m @ 7.4V, Max Speed: ~5.8 rad/s)
+- **Actuators:** Feetech STS3215-C018 (Stall Torque: ~3.0 N·m @ 7.4V, Max Speed: ~4.7 rad/s)
 - **Build System:** `ament_cmake`
 - **Target Environments:** ROS 2 Jazzy, Gazebo Sim (Harmonic / Sim 8), RViz2, Reinforcement Learning (Isaac Gym, Isaac Lab, MuJoCo)
 
