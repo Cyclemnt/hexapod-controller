@@ -15,8 +15,13 @@
   <depend>sensor_msgs</depend>
   <depend>hexapod_core</depend>
 
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_index_cpp</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <test_depend>hexapod_description</test_depend>
+  <test_depend>urdf</test_depend>
+  <test_depend>xacro</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

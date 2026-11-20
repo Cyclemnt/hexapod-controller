@@ -58,12 +58,19 @@ install(DIRECTORY config launch
 )
 
 if(BUILD_TESTING)
+    find_package(ament_cmake_gtest REQUIRED)
+    find_package(ament_index_cpp REQUIRED)
+    find_package(urdf REQUIRED)
     find_package(ament_lint_auto REQUIRED)
     set(ament_cmake_copyright_FOUND TRUE)
     set(ament_cmake_cpplint_FOUND TRUE)
     set(ament_cmake_uncrustify_FOUND TRUE)
     set(ament_cmake_flake8_FOUND TRUE)
     ament_lint_auto_find_test_dependencies()
+
+    ament_add_gtest(test_urdf_geometry_sync test/test_urdf_geometry_sync.cpp)
+    target_link_libraries(test_urdf_geometry_sync hexapod_core::hexapod_core)
+    ament_target_dependencies(test_urdf_geometry_sync ament_index_cpp urdf)
 endif()
 
 ament_package()
