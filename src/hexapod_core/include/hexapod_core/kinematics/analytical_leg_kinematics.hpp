@@ -20,6 +20,8 @@ public:
 
 private:
     LegDimensions dimensions_;
+    double effectiveTibiaLength_{0.0};
+    double tibiaAngleOffset_{0.0};
 };
 
 }  // namespace hexapod::core

@@ -1,0 +1,13 @@
+standing_controller_node:
+  ros__parameters:
+    target_body_height: -0.120      # Nominal standing height (foot at -120 mm in leg frame)
+    sitting_body_height: -0.060     # Sitting/initial height (feet folded/lifted)
+    stance_radius: 0.135            # Nominal foot reach (45mm coxa + 90mm femur = 135mm)
+    transition_time_sec: 2.5        # Time to transition smoothly from sitting to standing
+    update_rate_hz: 50.0            # Control loop frequency
+    command_topic: "/forward_position_controller/commands"
+
+    joint_mapping:
+      coxa_multiplier: -1.0
+      femur_multiplier: 1.0
+      tibia_multiplier: -1.0

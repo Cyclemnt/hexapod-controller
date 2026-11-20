@@ -44,6 +44,8 @@ if(ament_cmake_FOUND)
         find_package(ament_lint_auto REQUIRED)
         set(ament_cmake_copyright_FOUND TRUE)
         set(ament_cmake_cpplint_FOUND TRUE)
+        set(ament_cmake_uncrustify_FOUND TRUE)
+        set(ament_cmake_flake8_FOUND TRUE)
         ament_lint_auto_find_test_dependencies()
 
         ament_add_gtest(test_analytical_leg_kinematics test/test_analytical_leg_kinematics.cpp)

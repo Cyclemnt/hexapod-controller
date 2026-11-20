@@ -22,10 +22,13 @@ enum class LegId : uint8_t {
 class HexapodGeometry {
 public:
     // Chassis and link physical dimensions in meters
-    static constexpr double kChassisRadius{0.130};  // Distance center to corner (130 mm)
-    static constexpr double kCoxaLength{0.045};     // 45 mm
-    static constexpr double kFemurLength{0.090};    // 90 mm
-    static constexpr double kTibiaLength{0.120};    // 120 mm
+    static constexpr double kChassisRadius{0.133};   // Distance center to coxa joint (133 mm)
+    static constexpr double kCoxaMountZ{0.017546};   // Height of coxa joint above base_link (17.546 mm)
+    static constexpr double kCoxaLength{0.045};      // 45 mm
+    static constexpr double kFemurLength{0.090};     // 90 mm
+    static constexpr double kTibiaFootZ{0.118405};  // 118.405 mm
+    static constexpr double kTibiaFootX{0.0195};   // 19.5 mm
+    static constexpr double kFootRadius{0.005};      // 5 mm
 
     // Angles of leg mounting vertices relative to body frame center (radians)
     // Front of the robot (camera) is at 0 degrees, midpoint of the front edge.
@@ -37,7 +40,12 @@ public:
     static constexpr double kAngleFrontRight{-std::numbers::pi / 6.0};       // -30 deg
 
     [[nodiscard]] static constexpr LegDimensions getDefaultLegDimensions() noexcept {
-        return LegDimensions{.coxaLength = kCoxaLength, .femurLength = kFemurLength, .tibiaLength = kTibiaLength};
+        return LegDimensions{
+            .coxaLength = kCoxaLength,
+            .femurLength = kFemurLength,
+            .tibiaFootZ = kTibiaFootZ,
+            .tibiaFootX = kTibiaFootX
+        };
     }
 
     [[nodiscard]] static LegMounting getLegMounting(LegId legId) noexcept;

@@ -21,19 +21,9 @@ protected:
     std::unique_ptr<AnalyticalLegKinematics> kinematics_;
 };
 
-TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsStraightArm) {
-    // All angles at 0 rad: arm extended horizontally along +X
+TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsNominalStandingPose) {
+    // In CAD convention: q1=0, q2=0, q3=0 -> femur horizontal, tibia pointing straight down perpendicular
     const LegJointAngles angles{.coxa = 0.0, .femur = 0.0, .tibia = 0.0};
-    const Point3D foot = kinematics_->forwardKinematics(angles);
-
-    EXPECT_NEAR(foot.x, 0.045 + 0.090 + 0.120, kEpsilon);
-    EXPECT_NEAR(foot.y, 0.0, kEpsilon);
-    EXPECT_NEAR(foot.z, 0.0, kEpsilon);
-}
-
-TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsStandingPose) {
-    // q1 = 0, q2 = 0, q3 = -pi/2: femur horizontal, tibia pointing straight down
-    const LegJointAngles angles{.coxa = 0.0, .femur = 0.0, .tibia = -std::numbers::pi / 2.0};
     const Point3D foot = kinematics_->forwardKinematics(angles);
 
     EXPECT_NEAR(foot.x, 0.045 + 0.090, kEpsilon);
@@ -41,10 +31,20 @@ TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsStandingPose) {
     EXPECT_NEAR(foot.z, -0.120, kEpsilon);
 }
 
+TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsStraightArmHorizontal) {
+    // q1=0, q2=0, q3 = +pi/2 -> tibia extended horizontally forward collinear with femur
+    const LegJointAngles angles{.coxa = 0.0, .femur = 0.0, .tibia = std::numbers::pi / 2.0};
+    const Point3D foot = kinematics_->forwardKinematics(angles);
+
+    EXPECT_NEAR(foot.x, 0.045 + 0.090 + 0.120, kEpsilon);
+    EXPECT_NEAR(foot.y, 0.0, kEpsilon);
+    EXPECT_NEAR(foot.z, 0.0, kEpsilon);
+}
+
 TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsWithCoxaRotation) {
-    // Coxa rotated by +45 deg (pi/4), femur horizontal, tibia straight down
+    // Coxa rotated by +45 deg (pi/4), femur horizontal (q2=0), tibia vertical down (q3=0)
     const double coxaAngle = std::numbers::pi / 4.0;
-    const LegJointAngles angles{.coxa = coxaAngle, .femur = 0.0, .tibia = -std::numbers::pi / 2.0};
+    const LegJointAngles angles{.coxa = coxaAngle, .femur = 0.0, .tibia = 0.0};
     const Point3D foot = kinematics_->forwardKinematics(angles);
 
     const double expectedRadius = 0.045 + 0.090;
@@ -54,13 +54,14 @@ TEST_F(AnalyticalLegKinematicsTest, ForwardKinematicsWithCoxaRotation) {
 }
 
 TEST_F(AnalyticalLegKinematicsTest, InverseKinematicsStandingPoseRoundtrip) {
+    // Target is nominal standing pose
     const Point3D target{0.135, 0.0, -0.120};
     const auto anglesOpt = kinematics_->inverseKinematics(target);
 
     ASSERT_TRUE(anglesOpt.has_value());
     EXPECT_NEAR(anglesOpt->coxa, 0.0, kEpsilon);
     EXPECT_NEAR(anglesOpt->femur, 0.0, kEpsilon);
-    EXPECT_NEAR(anglesOpt->tibia, -std::numbers::pi / 2.0, kEpsilon);
+    EXPECT_NEAR(anglesOpt->tibia, 0.0, kEpsilon);
 
     const Point3D footCheck = kinematics_->forwardKinematics(*anglesOpt);
     EXPECT_NEAR(footCheck.x, target.x, kEpsilon);
@@ -71,7 +72,7 @@ TEST_F(AnalyticalLegKinematicsTest, InverseKinematicsStandingPoseRoundtrip) {
 TEST_F(AnalyticalLegKinematicsTest, InverseKinematicsFkRoundtripMultiplePoses) {
     const double coxaAngles[] = {-0.5, -0.2, 0.0, 0.2, 0.5};
     const double femurAngles[] = {-0.3, -0.1, 0.0, 0.1, 0.3};
-    const double tibiaAngles[] = {-2.0, -1.5, -1.0, -0.6};
+    const double tibiaAngles[] = {-0.4, -0.2, 0.0, 0.2, 0.4};
 
     for (double q1 : coxaAngles) {
         for (double q2 : femurAngles) {
@@ -96,12 +97,10 @@ TEST_F(AnalyticalLegKinematicsTest, InverseKinematicsFkRoundtripMultiplePoses) {
 }
 
 TEST_F(AnalyticalLegKinematicsTest, UnreachableTargets) {
-    // Target far beyond maximum reach (45 + 90 + 120 = 255 mm)
     const Point3D outOfReachTarget{0.350, 0.0, 0.0};
     EXPECT_FALSE(kinematics_->isReachable(outOfReachTarget));
     EXPECT_FALSE(kinematics_->inverseKinematics(outOfReachTarget).has_value());
 
-    // Target too close (min reach: |90 - 120| = 30 mm from femur base)
     const Point3D tooCloseTarget{0.045, 0.0, 0.0};
     EXPECT_FALSE(kinematics_->isReachable(tooCloseTarget));
     EXPECT_FALSE(kinematics_->inverseKinematics(tooCloseTarget).has_value());
@@ -109,4 +108,3 @@ TEST_F(AnalyticalLegKinematicsTest, UnreachableTargets) {
 
 }  // namespace
 }  // namespace hexapod::core
-

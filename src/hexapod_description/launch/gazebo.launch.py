@@ -95,19 +95,18 @@ def generate_launch_description():
         ]
     )
 
-    # Controller not used yet: enable this block when you configure it
-    # load_joint_trajectory_controller = TimerAction(
-    #     period=6.0,
-    #     actions=[
-    #         Node(
-    #             condition=IfCondition(load_controllers),
-    #             package='controller_manager',
-    #             executable='spawner',
-    #             arguments=['joint_trajectory_controller'],
-    #             output='screen',
-    #         )
-    #     ]
-    # )
+    load_forward_position_controller = TimerAction(
+        period=6.0,
+        actions=[
+            Node(
+                condition=IfCondition(load_controllers),
+                package='controller_manager',
+                executable='spawner',
+                arguments=['forward_position_controller'],
+                output='screen',
+            )
+        ]
+    )
 
     ros_gz_bridge = Node(
         package='ros_gz_bridge',
@@ -125,5 +124,5 @@ def generate_launch_description():
         ros_gz_bridge,
         robot_state_publisher,
         load_joint_state_broadcaster,
-        # load_joint_trajectory_controller,
+        load_forward_position_controller,
     ])

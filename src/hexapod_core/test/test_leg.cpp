@@ -59,11 +59,11 @@ TEST_F(LegTest, SetTargetInLegFrameStandingPose) {
     const auto angles = leg_->getTargetJointAngles();
     EXPECT_NEAR(angles.coxa, 0.0, kEpsilon);
     EXPECT_NEAR(angles.femur, 0.0, kEpsilon);
-    EXPECT_NEAR(angles.tibia, -std::numbers::pi / 2.0, kEpsilon);
+    EXPECT_NEAR(angles.tibia, 0.0, kEpsilon);
 
     EXPECT_NEAR(coxaJoint_->getTargetAngle(), 0.0, kEpsilon);
     EXPECT_NEAR(femurJoint_->getTargetAngle(), 0.0, kEpsilon);
-    EXPECT_NEAR(tibiaJoint_->getTargetAngle(), -std::numbers::pi / 2.0, kEpsilon);
+    EXPECT_NEAR(tibiaJoint_->getTargetAngle(), 0.0, kEpsilon);
 }
 
 TEST_F(LegTest, SetTargetInBodyFrameMatchesLegFrame) {
@@ -85,7 +85,7 @@ TEST_F(LegTest, SetTargetInBodyFrameMatchesLegFrame) {
 TEST_F(LegTest, ForwardKinematicsFromPresentJointState) {
     coxaJoint_->setPresentState(0.1, 0.0, 0.0);
     femurJoint_->setPresentState(0.0, 0.0, 0.0);
-    tibiaJoint_->setPresentState(-std::numbers::pi / 2.0, 0.0, 0.0);
+    tibiaJoint_->setPresentState(0.0, 0.0, 0.0);
 
     const Point3D footInLeg = leg_->getCurrentFootInLegFrame();
     const double expectedR = 0.045 + 0.090;
