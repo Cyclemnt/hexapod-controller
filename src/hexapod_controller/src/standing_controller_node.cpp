@@ -61,8 +61,8 @@ void StandingControllerNode::initParameters() {
     commandTopic_ = declare_parameter<std::string>("command_topic", "/forward_position_controller/commands");
 
     const double coxaMult = declare_parameter<double>("joint_mapping.coxa_multiplier", -1.0);
-    const double femurMult = declare_parameter<double>("joint_mapping.femur_multiplier", -1.0);
-    const double tibiaMult = declare_parameter<double>("joint_mapping.tibia_multiplier", 1.0);
+    const double femurMult = declare_parameter<double>("joint_mapping.femur_multiplier", 1.0);
+    const double tibiaMult = declare_parameter<double>("joint_mapping.tibia_multiplier", -1.0);
 
     for (size_t i = 0; i < 6; ++i) {
         jointMapper_.setLegConfig(i, LegJointConfig{
@@ -75,16 +75,17 @@ void StandingControllerNode::initParameters() {
 
 void StandingControllerNode::initLegs() {
     const auto dims = core::HexapodGeometry::getDefaultLegDimensions();
-    const core::JointLimits limits{};
+    const core::JointLimits coxaLimits{.minAngleRad = -1.100, .maxAngleRad = 1.100};
+    const core::JointLimits pitchLimits{};
     const core::JointCalibration calib{};
 
     for (size_t i = 0; i < 6; ++i) {
         const auto mounting = core::HexapodGeometry::getLegMountingByIndex(static_cast<uint8_t>(i));
         auto kinematics = std::make_unique<core::AnalyticalLegKinematics>(dims);
 
-        auto coxaJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 1), limits, calib);
-        auto femurJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 2), limits, calib);
-        auto tibiaJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 3), limits, calib);
+        auto coxaJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 1), coxaLimits, calib);
+        auto femurJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 2), pitchLimits, calib);
+        auto tibiaJoint = std::make_shared<core::Joint>(static_cast<uint8_t>(i * 3 + 3), pitchLimits, calib);
 
         legs_[i] = std::make_unique<core::Leg>(
             static_cast<uint8_t>(i), mounting, std::move(kinematics),
@@ -120,7 +121,7 @@ void StandingControllerNode::timerCallback() {
 
     for (size_t i = 0; i < 6; ++i) {
         core::Point3D footWorld = nominalFeetInWorld_[i];
-        footWorld.z = currentHeight;
+        footWorld.z = legs_[i]->getMounting().originBodyFrame.z + currentHeight;
 
         const core::Point3D footInBody = applyBodyIk(footWorld, currentBodyPose_);
 

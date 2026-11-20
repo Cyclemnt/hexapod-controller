@@ -28,10 +28,10 @@ struct LegJointAngles {
 };
 
 struct LegDimensions {
-    double coxaLength{0.045};     // 45 mm (0.045 m)
-    double femurLength{0.090};    // 90 mm (0.090 m)
-    double tibiaFootZ{0.118405};  // 118.405 mm downward drop (knee joint to foot sphere center)
-    double tibiaFootX{0.019500};  // 19.5 mm outward radial offset along tibia +X
+    double coxaLength{0.0};   // Coxa link length along +X (meters)
+    double femurLength{0.0};  // Femur link length along +X (meters)
+    double tibiaFootZ{0.0};   // Knee-to-foot downward drop along -Z at q3=0 (meters)
+    double tibiaFootX{0.0};   // Knee-to-foot radial offset along +X at q3=0 (meters)
 
     constexpr bool operator==(const LegDimensions& other) const noexcept = default;
 };

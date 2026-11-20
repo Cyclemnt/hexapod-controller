@@ -19,8 +19,8 @@ UrdfJointMapper::UrdfJointMapper() noexcept {
     for (size_t i = 0; i < 6; ++i) {
         legConfigs_[i] = LegJointConfig{
             .coxa = JointAxisConfig{.multiplier = -1.0, .offsetRad = 0.0},
-            .femur = JointAxisConfig{.multiplier = -1.0, .offsetRad = 0.0},
-            .tibia = JointAxisConfig{.multiplier = 1.0, .offsetRad = 0.0}
+            .femur = JointAxisConfig{.multiplier = 1.0, .offsetRad = 0.0},
+            .tibia = JointAxisConfig{.multiplier = -1.0, .offsetRad = 0.0}
         };
     }
 }

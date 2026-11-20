@@ -16,8 +16,8 @@ struct JointAxisConfig {
 
 struct LegJointConfig {
     JointAxisConfig coxa{-1.0, 0.0};
-    JointAxisConfig femur{-1.0, 0.0};
-    JointAxisConfig tibia{1.0, 0.0};
+    JointAxisConfig femur{1.0, 0.0};
+    JointAxisConfig tibia{-1.0, 0.0};
 };
 
 class UrdfJointMapper {

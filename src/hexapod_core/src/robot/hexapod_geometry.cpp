@@ -9,7 +9,7 @@ namespace {
 LegMounting createMountingFromAngle(double angleRad) noexcept {
     const double x = HexapodGeometry::kChassisRadius * std::cos(angleRad);
     const double y = HexapodGeometry::kChassisRadius * std::sin(angleRad);
-    return LegMounting{.originBodyFrame = Point3D{x, y, 0.0}, .yawRad = angleRad};
+    return LegMounting{.originBodyFrame = Point3D{x, y, HexapodGeometry::kCoxaMountZ}, .yawRad = angleRad};
 }
 
 }  // namespace

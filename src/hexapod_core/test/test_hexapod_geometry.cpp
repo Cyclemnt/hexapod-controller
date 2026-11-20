@@ -12,9 +12,10 @@ constexpr double kEpsilon = 1e-6;
 
 TEST(HexapodGeometryTest, DefaultDimensions) {
     const LegDimensions dims = HexapodGeometry::getDefaultLegDimensions();
-    EXPECT_DOUBLE_EQ(dims.coxaLength, 0.045);
-    EXPECT_DOUBLE_EQ(dims.femurLength, 0.090);
-    EXPECT_DOUBLE_EQ(dims.tibiaLength, 0.120);
+    EXPECT_DOUBLE_EQ(dims.coxaLength, HexapodGeometry::kCoxaLength);
+    EXPECT_DOUBLE_EQ(dims.femurLength, HexapodGeometry::kFemurLength);
+    EXPECT_DOUBLE_EQ(dims.tibiaFootZ, HexapodGeometry::kTibiaFootZ);
+    EXPECT_DOUBLE_EQ(dims.tibiaFootX, HexapodGeometry::kTibiaFootX);
 }
 
 TEST(HexapodGeometryTest, ChassisRadiusConsistency) {
@@ -25,7 +26,7 @@ TEST(HexapodGeometryTest, ChassisRadiusConsistency) {
         const Point3D& origin = mountings[i].originBodyFrame;
         const double radius = std::hypot(origin.x, origin.y);
         EXPECT_NEAR(radius, HexapodGeometry::kChassisRadius, kEpsilon);
-        EXPECT_NEAR(origin.z, 0.0, kEpsilon);
+        EXPECT_NEAR(origin.z, HexapodGeometry::kCoxaMountZ, kEpsilon);
     }
 }
 

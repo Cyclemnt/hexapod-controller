@@ -48,7 +48,7 @@ TEST_F(LegTest, ConstructionAndAccessors) {
 }
 
 TEST_F(LegTest, SetTargetInLegFrameStandingPose) {
-    const Point3D targetLegFrame{0.135, 0.0, -0.120};
+    const Point3D targetLegFrame{0.1545, 0.0, -0.118405};
     const bool success = leg_->setTargetInLegFrame(targetLegFrame);
 
     EXPECT_TRUE(success);
@@ -67,7 +67,7 @@ TEST_F(LegTest, SetTargetInLegFrameStandingPose) {
 }
 
 TEST_F(LegTest, SetTargetInBodyFrameMatchesLegFrame) {
-    const Point3D targetLegFrame{0.135, 0.0, -0.120};
+    const Point3D targetLegFrame{0.1545, 0.0, -0.118405};
     const Point3D targetBodyFrame = mounting_.getTransform().transformPoint(targetLegFrame);
 
     const bool success = leg_->setTargetInBodyFrame(targetBodyFrame);
@@ -88,10 +88,10 @@ TEST_F(LegTest, ForwardKinematicsFromPresentJointState) {
     tibiaJoint_->setPresentState(0.0, 0.0, 0.0);
 
     const Point3D footInLeg = leg_->getCurrentFootInLegFrame();
-    const double expectedR = 0.045 + 0.090;
+    const double expectedR = 0.1545;  // 0.090 + 0.045 + 0.0195
     EXPECT_NEAR(footInLeg.x, expectedR * std::cos(0.1), kEpsilon);
     EXPECT_NEAR(footInLeg.y, expectedR * std::sin(0.1), kEpsilon);
-    EXPECT_NEAR(footInLeg.z, -0.120, kEpsilon);
+    EXPECT_NEAR(footInLeg.z, -0.118405, kEpsilon);
 
     const Point3D footInBody = leg_->getCurrentFootInBodyFrame();
     const Point3D expectedBody = mounting_.getTransform().transformPoint(footInLeg);
