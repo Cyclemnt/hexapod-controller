@@ -13,6 +13,8 @@ add_library(${PROJECT_NAME}
     src/actuator/joint.cpp
     src/robot/leg.cpp
     src/robot/hexapod_geometry.cpp
+    src/locomotion/swing_trajectory_generator.cpp
+    src/locomotion/gait_scheduler.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -56,6 +58,12 @@ if(ament_cmake_FOUND)
 
         ament_add_gtest(test_leg test/test_leg.cpp)
         target_link_libraries(test_leg ${PROJECT_NAME})
+
+        ament_add_gtest(test_swing_trajectory_generator test/test_swing_trajectory_generator.cpp)
+        target_link_libraries(test_swing_trajectory_generator ${PROJECT_NAME})
+
+        ament_add_gtest(test_gait_scheduler test/test_gait_scheduler.cpp)
+        target_link_libraries(test_gait_scheduler ${PROJECT_NAME})
     endif()
 
     ament_package()
@@ -86,5 +94,13 @@ else()
         add_executable(test_leg test/test_leg.cpp)
         target_link_libraries(test_leg PRIVATE ${PROJECT_NAME} GTest::gtest_main)
         gtest_discover_tests(test_leg)
+
+        add_executable(test_swing_trajectory_generator test/test_swing_trajectory_generator.cpp)
+        target_link_libraries(test_swing_trajectory_generator PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+        gtest_discover_tests(test_swing_trajectory_generator)
+
+        add_executable(test_gait_scheduler test/test_gait_scheduler.cpp)
+        target_link_libraries(test_gait_scheduler PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+        gtest_discover_tests(test_gait_scheduler)
     endif()
 endif()
