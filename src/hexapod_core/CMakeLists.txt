@@ -15,6 +15,10 @@ add_library(${PROJECT_NAME}
     src/robot/hexapod_geometry.cpp
     src/locomotion/swing_trajectory_generator.cpp
     src/locomotion/gait_scheduler.cpp
+    src/locomotion/contact_detector.cpp
+    src/locomotion/leg_locomotion_controller.cpp
+    src/locomotion/terrain_estimator.cpp
+    src/locomotion/locomotion_engine.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -64,6 +68,12 @@ if(ament_cmake_FOUND)
 
         ament_add_gtest(test_gait_scheduler test/test_gait_scheduler.cpp)
         target_link_libraries(test_gait_scheduler ${PROJECT_NAME})
+
+        ament_add_gtest(test_terrain_estimator test/test_terrain_estimator.cpp)
+        target_link_libraries(test_terrain_estimator ${PROJECT_NAME})
+
+        ament_add_gtest(test_locomotion_engine test/test_locomotion_engine.cpp)
+        target_link_libraries(test_locomotion_engine ${PROJECT_NAME})
     endif()
 
     ament_package()
@@ -102,5 +112,13 @@ else()
         add_executable(test_gait_scheduler test/test_gait_scheduler.cpp)
         target_link_libraries(test_gait_scheduler PRIVATE ${PROJECT_NAME} GTest::gtest_main)
         gtest_discover_tests(test_gait_scheduler)
+
+        add_executable(test_terrain_estimator test/test_terrain_estimator.cpp)
+        target_link_libraries(test_terrain_estimator PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+        gtest_discover_tests(test_terrain_estimator)
+
+        add_executable(test_locomotion_engine test/test_locomotion_engine.cpp)
+        target_link_libraries(test_locomotion_engine PRIVATE ${PROJECT_NAME} GTest::gtest_main)
+        gtest_discover_tests(test_locomotion_engine)
     endif()
 endif()

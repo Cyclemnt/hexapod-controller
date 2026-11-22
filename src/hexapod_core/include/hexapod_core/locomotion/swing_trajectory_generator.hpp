@@ -39,6 +39,7 @@ public:
     [[nodiscard]] const Point3D& getLiftoffPosition() const noexcept { return liftoffPosition_; }
     [[nodiscard]] const Point3D& getTargetPosition() const noexcept { return targetPosition_; }
     [[nodiscard]] double getSwingDuration() const noexcept { return swingDurationSec_; }
+    [[nodiscard]] double getApexTime() const noexcept { return apexTimeSec_; }
     [[nodiscard]] double getApexHeight() const noexcept { return apexZ_; }
     [[nodiscard]] const SwingConfig& getConfig() const noexcept { return config_; }
     void setConfig(const SwingConfig& config) noexcept { config_ = config; }
