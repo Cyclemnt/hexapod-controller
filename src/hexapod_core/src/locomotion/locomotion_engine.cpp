@@ -1,5 +1,6 @@
 #include "hexapod_core/locomotion/locomotion_engine.hpp"
 
+#include <array>
 #include <cmath>
 #include <numbers>
 
@@ -211,7 +212,7 @@ void LocomotionEngine::updateStanding(double dt) noexcept {
     size_t stanceCount = 0;
     for (size_t i = 0; i < 6; ++i) {
         if (legControllers_[i].isStance() && legs_[i]) {
-            stanceFeetNominal[stanceCount++] = previousEffPose_.applyBodyFk(legs_[i]->getCurrentFootInBodyFrame());
+            stanceFeetNominal[stanceCount++] = legControllers_[i].getCurrentFootBodyFrame();
         }
     }
 
@@ -243,28 +244,30 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     const bool isCmdZero = (linSpeed <= config_.idleVelocityThreshold && angSpeed <= config_.idleVelocityThreshold);
 
     // Clean stop without teleportation:
-    // Check horizontal distance only (ignore dz so bumps/holes/slopes do not trigger infinite stepping)
-    bool needsCentering = false;
+    // Check per-leg horizontal distance only (ignore dz so bumps/holes/slopes do not trigger infinite stepping)
+    constexpr double kMaxCenteringDist = 0.002;  // 2 mm
+    constexpr double kMaxCenteringDistSq = kMaxCenteringDist * kMaxCenteringDist;
+    std::array<bool, 6> legNeedsCentering{false, false, false, false, false, false};
+    bool allLegsInStance = true;
+    bool anyLegNeedsCentering = false;
+
     if (isCmdZero) {
-        constexpr double kMaxCenteringDist = 0.002;  // 2 mm
-        constexpr double kMaxCenteringDistSq = kMaxCenteringDist * kMaxCenteringDist;
         for (size_t i = 0; i < 6; ++i) {
             if (legControllers_[i].isStance()) {
                 const Point3D curStance = legControllers_[i].getStancePositionBodyFrame();
                 const double dx = curStance.x - nominalFeetInBody_[i].x;
                 const double dy = curStance.y - nominalFeetInBody_[i].y;
                 if ((dx * dx + dy * dy) > kMaxCenteringDistSq) {
-                    needsCentering = true;
-                    break;
+                    legNeedsCentering[i] = true;
+                    anyLegNeedsCentering = true;
                 }
             } else {
-                needsCentering = true;
-                break;
+                allLegsInStance = false;
             }
         }
     }
 
-    if (isCmdZero && !needsCentering) {
+    if (isCmdZero && allLegsInStance && !anyLegNeedsCentering) {
         idleTimer_ += dt;
         if (idleTimer_ >= config_.idleSettlingTimeSec) {
             state_ = LocomotionState::kStanding;
@@ -282,15 +285,16 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     gaitScheduler_.update(dt);
 
     // 2. Update each leg controller in nominal frame
-    const bool allowLiftoff = !isCmdZero || needsCentering;
     for (size_t i = 0; i < 6; ++i) {
         const Point3D measuredNominal = legs_[i]
             ? previousEffPose_.applyBodyFk(legs_[i]->getCurrentFootInBodyFrame())
             : legControllers_[i].getStancePositionBodyFrame();
 
-        if (allowLiftoff && gaitScheduler_.hasLiftoffOccurred(i)) {
+        const bool allowLegLiftoff = !isCmdZero || legNeedsCentering[i];
+        if (allowLegLiftoff && gaitScheduler_.hasLiftoffOccurred(i)) {
+            const Point3D startNominal = legControllers_[i].getStancePositionBodyFrame();
             const Point3D target = gaitScheduler_.calculateTouchdownTarget(nominalFeetInBody_[i], activeLinVel, activeAngVel);
-            legControllers_[i].initiateSwing(measuredNominal, target, gaitScheduler_.getSwingDuration());
+            legControllers_[i].initiateSwing(startNominal, target, gaitScheduler_.getSwingDuration());
         }
 
         const Point3D vStance = gaitScheduler_.calculateStanceVelocity(activeLinVel, activeAngVel,
@@ -304,8 +308,7 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     size_t stanceCount = 0;
     for (size_t i = 0; i < 6; ++i) {
         if (legControllers_[i].isStance() && legs_[i]) {
-            const Point3D footInChassis = legControllers_[i].getCurrentFootBodyFrame();
-            stanceFeetNominal[stanceCount++] = previousEffPose_.applyBodyFk(footInChassis);
+            stanceFeetNominal[stanceCount++] = legControllers_[i].getCurrentFootBodyFrame();
         }
     }
 

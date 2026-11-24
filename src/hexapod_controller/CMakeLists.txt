@@ -13,10 +13,12 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(hexapod_core REQUIRED)
 
 add_library(${PROJECT_NAME}_lib
     src/joint_mapping.cpp
+    src/locomotion_engine_node.cpp
     src/standing_controller_node.cpp
 )
 
@@ -30,7 +32,16 @@ ament_target_dependencies(${PROJECT_NAME}_lib
     geometry_msgs
     std_msgs
     sensor_msgs
+    std_srvs
     hexapod_core
+)
+
+add_executable(locomotion_engine_node
+    src/locomotion_engine_main.cpp
+)
+
+target_link_libraries(locomotion_engine_node
+    ${PROJECT_NAME}_lib
 )
 
 add_executable(standing_controller_node
@@ -43,6 +54,7 @@ target_link_libraries(standing_controller_node
 
 install(TARGETS
     ${PROJECT_NAME}_lib
+    locomotion_engine_node
     standing_controller_node
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
@@ -71,6 +83,10 @@ if(BUILD_TESTING)
     ament_add_gtest(test_urdf_geometry_sync test/test_urdf_geometry_sync.cpp)
     target_link_libraries(test_urdf_geometry_sync hexapod_core::hexapod_core)
     ament_target_dependencies(test_urdf_geometry_sync ament_index_cpp urdf)
+
+    ament_add_gtest(test_locomotion_engine_node test/test_locomotion_engine_node.cpp)
+    target_link_libraries(test_locomotion_engine_node ${PROJECT_NAME}_lib)
+    ament_target_dependencies(test_locomotion_engine_node rclcpp geometry_msgs sensor_msgs std_msgs std_srvs)
 endif()
 
 ament_package()

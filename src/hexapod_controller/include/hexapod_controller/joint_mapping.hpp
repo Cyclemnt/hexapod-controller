@@ -3,6 +3,7 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "hexapod_core/kinematics/joint_types.hpp"
@@ -27,6 +28,11 @@ public:
 
     [[nodiscard]] std::vector<double> mapToUrdf(const std::array<core::LegJointAngles, 6>& kinematicAngles) const noexcept;
     [[nodiscard]] static const std::array<std::string, 18>& getJointNames() noexcept;
+    [[nodiscard]] static int findJointIndex(std::string_view jointName) noexcept;
+
+    [[nodiscard]] double mapPositionFromUrdf(size_t legIndex, size_t jointInLeg, double urdfPosition) const noexcept;
+    [[nodiscard]] double mapVelocityFromUrdf(size_t legIndex, size_t jointInLeg, double urdfVelocity) const noexcept;
+    [[nodiscard]] double mapEffortFromUrdf(size_t legIndex, size_t jointInLeg, double urdfEffort) const noexcept;
 
     void setLegConfig(size_t legIndex, const LegJointConfig& config) noexcept;
     [[nodiscard]] const LegJointConfig& getLegConfig(size_t legIndex) const noexcept;

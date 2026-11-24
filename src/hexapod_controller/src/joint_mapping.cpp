@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "hexapod_controller/joint_mapping.hpp"
 
 namespace hexapod::controller {
@@ -42,6 +44,48 @@ std::vector<double> UrdfJointMapper::mapToUrdf(const std::array<core::LegJointAn
 
 const std::array<std::string, 18>& UrdfJointMapper::getJointNames() noexcept {
     return kJointNames;
+}
+
+int UrdfJointMapper::findJointIndex(std::string_view jointName) noexcept {
+    for (size_t i = 0; i < kJointNames.size(); ++i) {
+        if (kJointNames[i] == jointName) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}
+
+double UrdfJointMapper::mapPositionFromUrdf(size_t legIndex, size_t jointInLeg, double urdfPosition) const noexcept {
+    if (legIndex >= 6) {
+        return urdfPosition;
+    }
+    const auto& config = legConfigs_[legIndex];
+    const JointAxisConfig& axis = (jointInLeg == 0) ? config.coxa : (jointInLeg == 1 ? config.femur : config.tibia);
+    if (std::abs(axis.multiplier) < 1e-6) {
+        return urdfPosition;
+    }
+    return (urdfPosition - axis.offsetRad) / axis.multiplier;
+}
+
+double UrdfJointMapper::mapVelocityFromUrdf(size_t legIndex, size_t jointInLeg, double urdfVelocity) const noexcept {
+    if (legIndex >= 6) {
+        return urdfVelocity;
+    }
+    const auto& config = legConfigs_[legIndex];
+    const JointAxisConfig& axis = (jointInLeg == 0) ? config.coxa : (jointInLeg == 1 ? config.femur : config.tibia);
+    if (std::abs(axis.multiplier) < 1e-6) {
+        return urdfVelocity;
+    }
+    return urdfVelocity / axis.multiplier;
+}
+
+double UrdfJointMapper::mapEffortFromUrdf(size_t legIndex, size_t jointInLeg, double urdfEffort) const noexcept {
+    if (legIndex >= 6) {
+        return urdfEffort;
+    }
+    const auto& config = legConfigs_[legIndex];
+    const JointAxisConfig& axis = (jointInLeg == 0) ? config.coxa : (jointInLeg == 1 ? config.femur : config.tibia);
+    return urdfEffort * axis.multiplier;
 }
 
 void UrdfJointMapper::setLegConfig(size_t legIndex, const LegJointConfig& config) noexcept {

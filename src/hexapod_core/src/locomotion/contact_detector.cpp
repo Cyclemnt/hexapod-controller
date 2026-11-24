@@ -55,7 +55,7 @@ bool ContactDetector::detectObstacle(const ILeg& leg, double swingElapsedTime, d
     }
 
     const double coxaErr = std::abs(coxa->getTargetAngle() - coxa->getPresentAngle());
-    return (coxaErr >= config_.trackingErrorThresholdRad);
+    return (coxaEffort >= config_.effortThreshold && coxaErr >= config_.trackingErrorThresholdRad);
 }
 
 }  // namespace hexapod::core

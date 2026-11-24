@@ -1,0 +1,37 @@
+/**:
+  ros__parameters:
+    control_rate_hz: 50.0
+    command_topic: "/forward_position_controller/commands"
+    cmd_vel_topic: "/cmd_vel"
+    joint_states_topic: "/joint_states"
+    imu_topic: "/imu/data"
+    body_pose_topic: "/hexapod/body_pose_cmd"
+    body_twist_topic: "/hexapod/body_twist_cmd"
+    cmd_vel_timeout_sec: 0.5
+
+    sitting_height: -0.060
+    standing_height: -0.100859
+    stance_radius: 0.135
+    standing_transition_time_sec: 2.5
+    auto_stand: true
+
+    gait_type: "tripod"
+    cycle_period_sec: 1.0
+    step_height: 0.030
+    probe_velocity: 0.050
+    max_probing_distance: 0.030
+    step_height_boost: 0.025
+
+    effort_threshold: 1.0
+    critical_effort_threshold: 1.8
+    tracking_error_threshold_rad: 0.06
+    obstacle_effort_threshold: 1.5
+
+    imu_weight: 0.30
+    max_tilt_angle_rad: 0.35
+    max_com_shift_m: 0.035
+
+    joint_mapping:
+      coxa_multiplier: -1.0
+      femur_multiplier: 1.0
+      tibia_multiplier: -1.0
