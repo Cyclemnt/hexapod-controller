@@ -25,6 +25,7 @@ struct GaitConfig {
     GaitType type{GaitType::kTripod};
     double dutyFactor{0.50};          // Stance duty factor beta in (0.0, 1.0)
     double cyclePeriodSec{1.0};       // Total cycle period T in seconds
+    double maxStepRadius{0.035};      // Maximum horizontal half-stroke from nominal foot (meters)
     std::array<double, 6> phaseOffsets{0.0, 0.5, 0.0, 0.5, 0.0, 0.5};
 
     static constexpr GaitConfig createTripod(double cyclePeriodSec = 1.0) noexcept {

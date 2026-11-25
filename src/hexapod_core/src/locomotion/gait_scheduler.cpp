@@ -142,19 +142,41 @@ bool GaitScheduler::hasTouchdownOccurred(size_t legIndex) const noexcept {
 Point3D GaitScheduler::calculateStanceVelocity(const Point3D& linearVel,
                                               const Point3D& angularVel,
                                               const Point3D& footPositionBodyFrame) const noexcept {
-    const Point3D rotationalVel = angularVel.cross(footPositionBodyFrame);
-    return -(linearVel + rotationalVel);
+    const double halfStance = 0.5 * getStanceDuration();
+    Point3D effLin = linearVel;
+    Point3D effAng = angularVel;
+
+    if (halfStance > 1e-6 && config_.maxStepRadius > 1e-6) {
+        const Point3D rotationalVel = angularVel.cross(footPositionBodyFrame);
+        const Point3D totalVel = linearVel + rotationalVel;
+        const double stepDist = std::hypot(totalVel.x, totalVel.y) * halfStance;
+        if (stepDist > config_.maxStepRadius) {
+            const double scale = config_.maxStepRadius / stepDist;
+            effLin = effLin * scale;
+            effAng = effAng * scale;
+        }
+    }
+
+    const Point3D rotationalVel = effAng.cross(footPositionBodyFrame);
+    return -(effLin + rotationalVel);
 }
 
 Point3D GaitScheduler::calculateTouchdownTarget(const Point3D& nominalFootBodyFrame,
                                                const Point3D& linearVel,
                                                const Point3D& angularVel) const noexcept {
-    const double stanceDuration = getStanceDuration();
+    const double halfStance = 0.5 * getStanceDuration();
     const Point3D rotationalVel = angularVel.cross(nominalFootBodyFrame);
     const Point3D bodyVelAtFoot = linearVel + rotationalVel;
 
-    // Reach forward along the travel direction by half the stroke distance
-    return nominalFootBodyFrame + bodyVelAtFoot * (0.5 * stanceDuration);
+    Point3D offset = bodyVelAtFoot * halfStance;
+    const double offsetNorm = std::hypot(offset.x, offset.y);
+    if (config_.maxStepRadius > 1e-6 && offsetNorm > config_.maxStepRadius) {
+        const double scale = config_.maxStepRadius / offsetNorm;
+        offset.x *= scale;
+        offset.y *= scale;
+    }
+
+    return nominalFootBodyFrame + offset;
 }
 
 }  // namespace hexapod::core

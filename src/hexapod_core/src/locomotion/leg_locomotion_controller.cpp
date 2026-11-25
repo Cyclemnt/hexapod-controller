@@ -42,6 +42,14 @@ void LegLocomotionController::forceStance(const Point3D& stancePositionBodyFrame
     }
 }
 
+void LegLocomotionController::adjustStanceHeight(double dz) noexcept {
+    if (state_ != LegState::kStance) {
+        return;
+    }
+    stancePositionBodyFrame_.z += dz;
+    targetFootBodyFrame_.z += dz;
+}
+
 void LegLocomotionController::initiateSwing(const Point3D& startPositionNominal,
                                             const Point3D& plannedTouchdownTarget,
                                             double swingDurationSec) noexcept {

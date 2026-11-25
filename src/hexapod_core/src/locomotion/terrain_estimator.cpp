@@ -67,23 +67,38 @@ TerrainEstimate TerrainEstimator::estimate(std::span<const Point3D> stanceFeetBo
     result.c = detC / det;
     result.valid = true;
 
+    // Evaluate RMS residual from fitted plane to distinguish true slopes from single-foot bumps
+    double sumSqErr = 0.0;
+    for (const auto& pt : stanceFeetBodyFrame) {
+        const double err = (result.a * pt.x + result.b * pt.y + result.c) - pt.z;
+        sumSqErr += err * err;
+    }
+    result.planarityResidual = std::sqrt(sumSqErr / nDouble);
+    // 6 mm RMS scale: flat/ramps (~0-2 mm) -> confidence ~1.0; single 20 mm step (~8-12 mm) -> confidence ~0.05
+    constexpr double kResidualScale = 0.006;
+    const double ratio = result.planarityResidual / kResidualScale;
+    result.planarityConfidence = std::exp(-(ratio * ratio));
+
     // Terrain slope angles (REP-103: dz/dx > 0 is pitch down = negative pitch, dz/dy > 0 is roll up = positive roll)
     result.terrainPitch = -std::atan(result.a);
     result.terrainRoll = +std::atan(result.b);
 
-    // CoM horizontal shift on slopes calculated from IMU orientation relative to gravity:
-    // When nose is up (imuPitch < 0), gravity pulls towards -X => comShift.x = -h * tan(imuPitch)
-    // When left side is up (imuRoll > 0), gravity pulls towards -Y => comShift.y = +h * tan(imuRoll)
+    // Fused attitude compensation (attenuate plane-fit component on non-planar step obstacles)
+    const double weight = std::clamp(config_.imuWeight, 0.0, 1.0);
+    const double terrainWeight = (1.0 - weight) * result.planarityConfidence;
+    const double fusedPitch = terrainWeight * result.terrainPitch + weight * imuPitch;
+    const double fusedRoll = terrainWeight * result.terrainRoll + weight * imuRoll;
+
+    // CoM horizontal shift on slopes: use IMU gravity tilt when available, else fused terrain slope
+    const bool hasImuTilt = (weight > 0.0) || (std::abs(imuPitch) > 1e-9) || (std::abs(imuRoll) > 1e-9);
+    const double comPitch = hasImuTilt ? imuPitch : fusedPitch;
+    const double comRoll = hasImuTilt ? imuRoll : fusedRoll;
+
     const double h = config_.nominalHeight;
     const double maxShift = config_.maxComShiftMeters;
-    result.comShift.x = std::clamp(-h * std::tan(imuPitch), -maxShift, maxShift);
-    result.comShift.y = std::clamp(+h * std::tan(imuRoll), -maxShift, maxShift);
+    result.comShift.x = std::clamp(-h * std::tan(comPitch), -maxShift, maxShift);
+    result.comShift.y = std::clamp(+h * std::tan(comRoll), -maxShift, maxShift);
     result.comShift.z = 0.0;
-
-    // Fused attitude compensation
-    const double weight = std::clamp(config_.imuWeight, 0.0, 1.0);
-    const double fusedPitch = (1.0 - weight) * result.terrainPitch + weight * imuPitch;
-    const double fusedRoll = (1.0 - weight) * result.terrainRoll + weight * imuRoll;
 
     const double maxTilt = config_.maxTiltAngleRad;
     result.attitudeCompensation.roll = std::clamp(-fusedRoll, -maxTilt, maxTilt);

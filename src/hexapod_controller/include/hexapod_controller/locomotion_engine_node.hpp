@@ -74,6 +74,7 @@ private:
     std::string gaitType_{"tripod"};
     double cyclePeriodSec_{1.0};
     double stepHeight_{0.030};
+    double maxStepRadius_{0.035};
     double probeVelocity_{0.050};
     double maxProbingDist_{0.030};
     double stepHeightBoost_{0.025};

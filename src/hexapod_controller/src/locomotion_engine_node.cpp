@@ -62,6 +62,7 @@ void LocomotionEngineNode::initParameters() {
     // Gait parameters
     gaitType_ = declare_parameter<std::string>("gait_type", "tripod");
     cyclePeriodSec_ = declare_parameter<double>("cycle_period_sec", 1.0);
+    maxStepRadius_ = declare_parameter<double>("max_step_radius", 0.035);
     stepHeight_ = declare_parameter<double>("step_height", 0.030);
     probeVelocity_ = declare_parameter<double>("probe_velocity", 0.050);
     maxProbingDist_ = declare_parameter<double>("max_probing_distance", 0.030);
@@ -108,6 +109,7 @@ void LocomotionEngineNode::initEngine() {
     }
 
     config.legConfig.swingConfig.stepHeight = stepHeight_;
+    config.gaitConfig.maxStepRadius = maxStepRadius_;
     config.legConfig.swingConfig.probeVelocity = probeVelocity_;
     config.legConfig.swingConfig.maxProbingDistance = maxProbingDist_;
     config.legConfig.stepHeightBoost = stepHeightBoost_;

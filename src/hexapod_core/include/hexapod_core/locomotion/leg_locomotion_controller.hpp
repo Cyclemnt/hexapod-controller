@@ -36,6 +36,9 @@ public:
     // Forces leg into stance state at a specific position
     void forceStance(const Point3D& stancePositionBodyFrame) noexcept;
 
+    // Adjusts vertical stance Z height smoothly without clearing transition flags
+    void adjustStanceHeight(double dz) noexcept;
+
     // Commands liftoff transition into swing from nominal start position
     void initiateSwing(const Point3D& startPositionNominal, const Point3D& plannedTouchdownTarget,
                        double swingDurationSec) noexcept;

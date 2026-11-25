@@ -53,6 +53,7 @@ void LocomotionEngine::initNominalFeet() noexcept {
         }
         const Point3D nominalLegFrame{config_.stanceRadius, 0.0, config_.targetStandingHeight};
         nominalFeetInBody_[i] = legs_[i]->getMounting().getTransform().transformPoint(nominalLegFrame);
+        lastGroundFeetNominal_[i] = nominalFeetInBody_[i];
         legControllers_[i].forceStance(nominalFeetInBody_[i]);
     }
 }
@@ -183,6 +184,7 @@ void LocomotionEngine::updateStanding(double dt) noexcept {
             const double nominalZ = nominalFeetInBody_[i].z;
             const double sitZ = nominalZ + (config_.sittingHeight - config_.targetStandingHeight);
             footPos.z = sitZ + s * (nominalZ - sitZ);
+            lastGroundFeetNominal_[i] = footPos;
             legControllers_[i].forceStance(footPos);
         }
         return;
@@ -194,6 +196,7 @@ void LocomotionEngine::updateStanding(double dt) noexcept {
     if (linSpeed > config_.idleVelocityThreshold || angSpeed > config_.idleVelocityThreshold) {
         state_ = LocomotionState::kLocomotion;
         idleTimer_ = 0.0;
+        stopCenteringSteps_.fill(0);
         gaitScheduler_.reset();
         for (size_t i = 0; i < 6; ++i) {
             if (gaitScheduler_.isSwing(i)) {
@@ -207,22 +210,28 @@ void LocomotionEngine::updateStanding(double dt) noexcept {
         return;
     }
 
-    // Fixed standing: estimate terrain from all 6 stance feet and maintain attitude + CoM compensation
-    std::array<Point3D, 6> stanceFeetNominal{};
-    size_t stanceCount = 0;
+    // Update ground memory from stance legs
     for (size_t i = 0; i < 6; ++i) {
-        if (legControllers_[i].isStance() && legs_[i]) {
-            stanceFeetNominal[stanceCount++] = legControllers_[i].getCurrentFootBodyFrame();
+        if (legControllers_[i].isStance()) {
+            lastGroundFeetNominal_[i] = legControllers_[i].getStancePositionBodyFrame();
         }
     }
 
     latestTerrainEstimate_ = terrainEstimator_.estimate(
-        std::span<const Point3D>(stanceFeetNominal.data(), stanceCount), imuRoll_, imuPitch_, imuYaw_);
+        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), imuRoll_, imuPitch_, imuYaw_);
+
+    // Smooth attitude compensation with 150 ms first-order low-pass filter
+    constexpr double kAttitudeTauSec = 0.15;
+    const double alpha = 1.0 - std::exp(-std::max(0.0, dt) / kAttitudeTauSec);
+    if (latestTerrainEstimate_.valid) {
+        filteredTerrainRoll_ += alpha * (latestTerrainEstimate_.attitudeCompensation.roll - filteredTerrainRoll_);
+        filteredTerrainPitch_ += alpha * (latestTerrainEstimate_.attitudeCompensation.pitch - filteredTerrainPitch_);
+    }
 
     BodyPoseCommand effPose = userBodyPose_;
     if (latestTerrainEstimate_.valid) {
-        effPose.roll += latestTerrainEstimate_.attitudeCompensation.roll;
-        effPose.pitch += latestTerrainEstimate_.attitudeCompensation.pitch;
+        effPose.roll += filteredTerrainRoll_;
+        effPose.pitch += filteredTerrainPitch_;
         effPose.x += latestTerrainEstimate_.comShift.x;
         effPose.y += latestTerrainEstimate_.comShift.y;
     }
@@ -243,8 +252,12 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     const double angSpeed = std::abs(cmdAngularVel_.z);
     const bool isCmdZero = (linSpeed <= config_.idleVelocityThreshold && angSpeed <= config_.idleVelocityThreshold);
 
-    // Clean stop without teleportation:
-    // Check per-leg horizontal distance only (ignore dz so bumps/holes/slopes do not trigger infinite stepping)
+    if (!isCmdZero) {
+        stopCenteringSteps_.fill(0);
+    }
+
+    // Clean stop without leg pumping:
+    // Allow at most 1 centering step per leg if horizontal offset > 2 mm
     constexpr double kMaxCenteringDist = 0.002;  // 2 mm
     constexpr double kMaxCenteringDistSq = kMaxCenteringDist * kMaxCenteringDist;
     std::array<bool, 6> legNeedsCentering{false, false, false, false, false, false};
@@ -257,7 +270,7 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
                 const Point3D curStance = legControllers_[i].getStancePositionBodyFrame();
                 const double dx = curStance.x - nominalFeetInBody_[i].x;
                 const double dy = curStance.y - nominalFeetInBody_[i].y;
-                if ((dx * dx + dy * dy) > kMaxCenteringDistSq) {
+                if ((dx * dx + dy * dy) > kMaxCenteringDistSq && stopCenteringSteps_[i] < 1) {
                     legNeedsCentering[i] = true;
                     anyLegNeedsCentering = true;
                 }
@@ -301,33 +314,61 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
                                                                       legControllers_[i].getStancePositionBodyFrame());
         const Point3D plannedTouchdown = gaitScheduler_.calculateTouchdownTarget(nominalFeetInBody_[i], activeLinVel, activeAngVel);
         legControllers_[i].update(dt, measuredNominal, vStance, plannedTouchdown, gaitScheduler_.getSwingDuration());
-    }
 
-    // 3. Terrain estimation from current stance feet in nominal frame (zero heap allocation)
-    std::array<Point3D, 6> stanceFeetNominal{};
-    size_t stanceCount = 0;
-    for (size_t i = 0; i < 6; ++i) {
-        if (legControllers_[i].isStance() && legs_[i]) {
-            stanceFeetNominal[stanceCount++] = legControllers_[i].getCurrentFootBodyFrame();
+        if (legControllers_[i].isStance()) {
+            lastGroundFeetNominal_[i] = legControllers_[i].getStancePositionBodyFrame();
         }
     }
 
-    latestTerrainEstimate_ = terrainEstimator_.estimate(
-        std::span<const Point3D>(stanceFeetNominal.data(), stanceCount), imuRoll_, imuPitch_, imuYaw_);
+    // 3. Regulate mean stance height smoothly toward nominal chassis-frame foot Z
+    double sumStanceZ = 0.0;
+    double sumNominalZ = 0.0;
+    size_t stanceCount = 0;
+    for (size_t i = 0; i < 6; ++i) {
+        if (legControllers_[i].isStance()) {
+            sumStanceZ += legControllers_[i].getStancePositionBodyFrame().z;
+            sumNominalZ += nominalFeetInBody_[i].z;
+            ++stanceCount;
+        }
+    }
+    if (stanceCount > 0) {
+        const double meanStanceZ = sumStanceZ / static_cast<double>(stanceCount);
+        const double meanNominalZ = sumNominalZ / static_cast<double>(stanceCount);
+        const double zError = std::clamp(meanNominalZ - meanStanceZ, -0.025, 0.025);
+        constexpr double kHeightRecoveryRate = 2.5;  // 1/s
+        const double zStep = zError * std::min(1.0, kHeightRecoveryRate * std::max(0.0, dt));
+        for (size_t i = 0; i < 6; ++i) {
+            if (legControllers_[i].isStance()) {
+                legControllers_[i].adjustStanceHeight(zStep);
+                lastGroundFeetNominal_[i] = legControllers_[i].getStancePositionBodyFrame();
+            }
+        }
+    }
 
-    // 4. Posture superposition: user command + terrain tilt compensation + CoM slope shift
+    // 4. Terrain estimation from full 6-foot support memory in nominal frame
+    latestTerrainEstimate_ = terrainEstimator_.estimate(
+        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), imuRoll_, imuPitch_, imuYaw_);
+
+    // Smooth attitude compensation with 150 ms first-order low-pass filter
+    constexpr double kAttitudeTauSec = 0.15;
+    const double alpha = 1.0 - std::exp(-std::max(0.0, dt) / kAttitudeTauSec);
+    if (latestTerrainEstimate_.valid) {
+        filteredTerrainRoll_ += alpha * (latestTerrainEstimate_.attitudeCompensation.roll - filteredTerrainRoll_);
+        filteredTerrainPitch_ += alpha * (latestTerrainEstimate_.attitudeCompensation.pitch - filteredTerrainPitch_);
+    }
+
+    // 5. Posture superposition: user command + filtered terrain tilt compensation + CoM slope shift
     BodyPoseCommand effPose = userBodyPose_;
     if (latestTerrainEstimate_.valid) {
-        effPose.roll += latestTerrainEstimate_.attitudeCompensation.roll;
-        effPose.pitch += latestTerrainEstimate_.attitudeCompensation.pitch;
+        effPose.roll += filteredTerrainRoll_;
+        effPose.pitch += filteredTerrainPitch_;
         effPose.x += latestTerrainEstimate_.comShift.x;
         effPose.y += latestTerrainEstimate_.comShift.y;
     }
 
-    // Store effPose for inverse transformation of measured feet in next cycle
     previousEffPose_ = effPose;
 
-    // Apply combined body posture transform to commanded leg targets once per leg
+    // 6. Apply combined body posture transform to commanded leg targets
     for (size_t i = 0; i < 6; ++i) {
         if (legs_[i]) {
             const Point3D targetBody = effPose.applyBodyIk(legControllers_[i].getTargetFootBodyFrame());

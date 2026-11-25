@@ -20,8 +20,10 @@ struct TerrainEstimate {
     double a{0.0};                     // dz/dx
     double b{0.0};                     // dz/dy
     double c{-0.120};                  // Height offset
-    double terrainPitch{0.0};          // atan(a)
-    double terrainRoll{0.0};           // atan(b)
+    double terrainPitch{0.0};          // -atan(a)
+    double terrainRoll{0.0};           // +atan(b)
+    double planarityResidual{0.0};     // RMS vertical residual from fitted plane (meters)
+    double planarityConfidence{1.0};   // Confidence in [0, 1] that contacts form a true planar slope
     Point3D comShift{};                // CoM compensation shift (dx, dy, 0)
     BodyPoseCommand attitudeCompensation{};  // Recommended chassis compensation pose
     bool valid{false};                 // True if >= 3 non-collinear stance feet were fitted

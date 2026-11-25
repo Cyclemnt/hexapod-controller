@@ -106,6 +106,10 @@ private:
     double idleTimer_{0.0};
     BodyPoseCommand previousEffPose_{};
     std::array<Point3D, 6> nominalFeetInBody_{};
+    std::array<Point3D, 6> lastGroundFeetNominal_{};
+    std::array<uint8_t, 6> stopCenteringSteps_{};
+    double filteredTerrainRoll_{0.0};
+    double filteredTerrainPitch_{0.0};
 };
 
 }  // namespace hexapod::core

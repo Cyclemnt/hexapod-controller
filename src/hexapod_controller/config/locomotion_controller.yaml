@@ -1,37 +1,44 @@
 /**:
   ros__parameters:
-    control_rate_hz: 50.0
-    command_topic: "/forward_position_controller/commands"
-    cmd_vel_topic: "/cmd_vel"
-    joint_states_topic: "/joint_states"
-    imu_topic: "/imu/data"
-    body_pose_topic: "/hexapod/body_pose_cmd"
-    body_twist_topic: "/hexapod/body_twist_cmd"
-    cmd_vel_timeout_sec: 0.5
+    # --- Control Loop & ROS 2 Topics ---
+    control_rate_hz: 50.0                                   # Locomotion control loop frequency (Hz)
+    command_topic: "/forward_position_controller/commands"  # Output topic for the 18 joint position commands
+    cmd_vel_topic: "/cmd_vel"                               # Velocity command topic (vx, vy, wz)
+    joint_states_topic: "/joint_states"                     # Servo state feedback topic (position, velocity, effort)
+    imu_topic: "/imu/data"                                  # IMU orientation topic (BNO055)
+    body_pose_topic: "/hexapod/body_pose_cmd"               # Absolute chassis pose command topic
+    body_twist_topic: "/hexapod/body_twist_cmd"             # Incremental chassis pose command topic
+    cmd_vel_timeout_sec: 0.5                                # Watchdog timeout: auto-stop if /cmd_vel stops publishing (s)
 
-    sitting_height: -0.060
-    standing_height: -0.100859
-    stance_radius: 0.135
-    standing_transition_time_sec: 2.5
-    auto_stand: true
+    # --- Base Geometry & Postures ---
+    sitting_height: -0.060             # Foot Z height in sitting posture (m)
+    standing_height: -0.100859         # Nominal foot Z height in standing posture (m)
+    stance_radius: 0.135               # Nominal horizontal radial reach of feet (m)
+    standing_transition_time_sec: 2.5  # Smooth sitting <-> standing transition duration (s)
+    auto_stand: true                   # Automatically stand up on node startup
 
-    gait_type: "tripod"
-    cycle_period_sec: 1.0
-    step_height: 0.030
-    probe_velocity: 0.050
-    max_probing_distance: 0.030
-    step_height_boost: 0.025
+    # --- Gait Parameters ---
+    gait_type: "tripod"          # Gait pattern: "tripod" (3 stance), "quadruped" (4), "wave" (5)
+    cycle_period_sec: 1.0        # Full gait cycle duration (stance + swing) per leg (s)
+    max_step_radius: 0.035       # Max horizontal half-stroke from neutral foot (0.035 m = 70 mm full step)
+    step_height: 0.030           # Foot lift clearance height above ground during swing (m)
+    probe_velocity: 0.020        # Downward probing velocity at landing to detect ground (m/s)
+    max_probing_distance: 0.020  # Maximum downward probing depth into a hole below ground (m)
+    step_height_boost: 0.025     # Extra step clearance added upon frontal obstacle reflex (m)
 
-    effort_threshold: 1.0
-    critical_effort_threshold: 1.8
-    tracking_error_threshold_rad: 0.06
-    obstacle_effort_threshold: 1.5
+    # --- Proprioceptive Contact & Obstacle Detection ---
+    effort_threshold: 0.35              # Moderate joint torque (Nm) confirming touchdown with tracking error
+    critical_effort_threshold: 0.75     # Critical joint torque (Nm) triggering immediate touchdown
+    tracking_error_threshold_rad: 0.025 # Minimum angular error (rad, ~1.4 deg) paired with effort_threshold
+    obstacle_effort_threshold: 0.80     # Coxa/femur torque (Nm) triggering frontal obstacle reflex
 
-    imu_weight: 0.30
-    max_tilt_angle_rad: 0.35
-    max_com_shift_m: 0.035
+    # --- Terrain Adaptation & IMU Fusion ---
+    imu_weight: 0.70                    # IMU vs support-plane weight (0.0 = pure leg plane, 1.0 = pure IMU)
+    max_tilt_angle_rad: 0.35            # Maximum roll/pitch attitude compensation on slopes (rad, ~20 deg)
+    max_com_shift_m: 0.035              # Maximum horizontal CoM shift on slopes (m)
 
+    # --- Kinematics <-> URDF Joint Sign Mapping ---
     joint_mapping:
-      coxa_multiplier: -1.0
-      femur_multiplier: 1.0
-      tibia_multiplier: -1.0
+      coxa_multiplier: -1.0             # Sign multiplier for coxa axis between IK and URDF
+      femur_multiplier: 1.0             # Sign multiplier for femur axis between IK and URDF
+      tibia_multiplier: -1.0            # Sign multiplier for tibia axis between IK and URDF
