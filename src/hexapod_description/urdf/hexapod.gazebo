@@ -5,7 +5,6 @@
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <parameters>$(find hexapod_description)/config/hexapod_controllers.yaml</parameters>
-      <position_proportional_gain>0.5</position_proportional_gain>
     </plugin>
   </gazebo>
 
@@ -82,8 +81,8 @@
     </gazebo>
 
     <gazebo reference="leg_${index}_tibia">
-      <mu1>1.5</mu1>
-      <mu2>1.5</mu2>
+      <mu1>0.85</mu1>
+      <mu2>0.85</mu2>
       <self_collide>false</self_collide>
     </gazebo>
   </xacro:macro>

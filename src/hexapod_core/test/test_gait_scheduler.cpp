@@ -102,7 +102,9 @@ TEST(GaitSchedulerTest, EventFlagsLiftoffAndTouchdown) {
 }
 
 TEST(GaitSchedulerTest, StanceVelocityOmnidirectionalAndRotational) {
-    const GaitScheduler scheduler{};
+    auto cfg = GaitConfig::createTripod(1.0);
+    cfg.maxStepRadius = 0.10;  // Unclamped for exact linearity check
+    const GaitScheduler scheduler(cfg);
 
     const Point3D footPos{0.10, 0.20, -0.12};
 
@@ -133,7 +135,9 @@ TEST(GaitSchedulerTest, StanceVelocityOmnidirectionalAndRotational) {
 }
 
 TEST(GaitSchedulerTest, TouchdownTargetPlacement) {
-    const GaitScheduler scheduler(GaitConfig::createTripod(1.0));
+    auto cfg = GaitConfig::createTripod(1.0);
+    cfg.maxStepRadius = 0.10;
+    const GaitScheduler scheduler(cfg);
     // T_stance = 0.5 s
 
     const Point3D neutralFoot{0.15, 0.10, -0.12};
@@ -146,6 +150,11 @@ TEST(GaitSchedulerTest, TouchdownTargetPlacement) {
     EXPECT_NEAR(target.x, neutralFoot.x + 0.05, kEpsilon);
     EXPECT_NEAR(target.y, neutralFoot.y, kEpsilon);
     EXPECT_NEAR(target.z, neutralFoot.z, kEpsilon);
+
+    // With default maxStepRadius = 0.035, reach is clamped to +0.035 m
+    const GaitScheduler clampedScheduler(GaitConfig::createTripod(1.0));
+    const Point3D clampedTarget = clampedScheduler.calculateTouchdownTarget(neutralFoot, vLin, vAngZero);
+    EXPECT_NEAR(clampedTarget.x, neutralFoot.x + 0.035, kEpsilon);
 }
 
 }  // namespace

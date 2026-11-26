@@ -27,10 +27,10 @@
     step_height_boost: 0.025     # Extra step clearance added upon frontal obstacle reflex (m)
 
     # --- Proprioceptive Contact & Obstacle Detection ---
-    effort_threshold: 0.35              # Moderate joint torque (Nm) confirming touchdown with tracking error
-    critical_effort_threshold: 0.75     # Critical joint torque (Nm) triggering immediate touchdown
-    tracking_error_threshold_rad: 0.025 # Minimum angular error (rad, ~1.4 deg) paired with effort_threshold
-    obstacle_effort_threshold: 0.80     # Coxa/femur torque (Nm) triggering frontal obstacle reflex
+    effort_threshold: 0.55              # Moderate joint torque (Nm) confirming touchdown with tracking error
+    critical_effort_threshold: 0.95     # Critical joint torque (Nm) triggering immediate touchdown
+    tracking_error_threshold_rad: 0.060 # Minimum angular error (rad, ~3.4 deg) paired with effort_threshold
+    obstacle_effort_threshold: 1.20     # Coxa/femur torque (Nm) triggering frontal obstacle reflex
 
     # --- Terrain Adaptation & IMU Fusion ---
     imu_weight: 0.70                    # IMU vs support-plane weight (0.0 = pure leg plane, 1.0 = pure IMU)

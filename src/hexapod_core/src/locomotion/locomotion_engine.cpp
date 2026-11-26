@@ -217,8 +217,11 @@ void LocomotionEngine::updateStanding(double dt) noexcept {
         }
     }
 
+    const double worldImuRoll = imuRoll_ - (filteredTerrainRoll_ + userBodyPose_.roll);
+    const double worldImuPitch = imuPitch_ - (filteredTerrainPitch_ + userBodyPose_.pitch);
+
     latestTerrainEstimate_ = terrainEstimator_.estimate(
-        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), imuRoll_, imuPitch_, imuYaw_);
+        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), worldImuRoll, worldImuPitch, imuYaw_);
 
     // Smooth attitude compensation with 150 ms first-order low-pass filter
     constexpr double kAttitudeTauSec = 0.15;
@@ -298,21 +301,35 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     gaitScheduler_.update(dt);
 
     // 2. Update each leg controller in nominal frame
+    auto computeTerrainAwareTarget = [this, &activeLinVel, &activeAngVel](size_t legIdx) -> Point3D {
+        Point3D target = gaitScheduler_.calculateTouchdownTarget(
+            nominalFeetInBody_[legIdx], activeLinVel, activeAngVel);
+        if (latestTerrainEstimate_.valid) {
+            const double planeZ = latestTerrainEstimate_.a * target.x +
+                                  latestTerrainEstimate_.b * target.y +
+                                  latestTerrainEstimate_.c;
+            const double nomZ = nominalFeetInBody_[legIdx].z;
+            const double blendedZ = nomZ + latestTerrainEstimate_.planarityConfidence * (planeZ - nomZ);
+            target.z = std::clamp(blendedZ, nomZ - 0.05, nomZ + 0.05);
+        }
+        return target;
+    };
+
     for (size_t i = 0; i < 6; ++i) {
         const Point3D measuredNominal = legs_[i]
             ? previousEffPose_.applyBodyFk(legs_[i]->getCurrentFootInBodyFrame())
             : legControllers_[i].getStancePositionBodyFrame();
 
+        const Point3D plannedTouchdown = computeTerrainAwareTarget(i);
+
         const bool allowLegLiftoff = !isCmdZero || legNeedsCentering[i];
         if (allowLegLiftoff && gaitScheduler_.hasLiftoffOccurred(i)) {
             const Point3D startNominal = legControllers_[i].getStancePositionBodyFrame();
-            const Point3D target = gaitScheduler_.calculateTouchdownTarget(nominalFeetInBody_[i], activeLinVel, activeAngVel);
-            legControllers_[i].initiateSwing(startNominal, target, gaitScheduler_.getSwingDuration());
+            legControllers_[i].initiateSwing(startNominal, plannedTouchdown, gaitScheduler_.getSwingDuration());
         }
 
         const Point3D vStance = gaitScheduler_.calculateStanceVelocity(activeLinVel, activeAngVel,
                                                                       legControllers_[i].getStancePositionBodyFrame());
-        const Point3D plannedTouchdown = gaitScheduler_.calculateTouchdownTarget(nominalFeetInBody_[i], activeLinVel, activeAngVel);
         legControllers_[i].update(dt, measuredNominal, vStance, plannedTouchdown, gaitScheduler_.getSwingDuration());
 
         if (legControllers_[i].isStance()) {
@@ -346,8 +363,11 @@ void LocomotionEngine::updateLocomotion(double dt) noexcept {
     }
 
     // 4. Terrain estimation from full 6-foot support memory in nominal frame
+    const double worldImuRoll = imuRoll_ - (filteredTerrainRoll_ + userBodyPose_.roll);
+    const double worldImuPitch = imuPitch_ - (filteredTerrainPitch_ + userBodyPose_.pitch);
+
     latestTerrainEstimate_ = terrainEstimator_.estimate(
-        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), imuRoll_, imuPitch_, imuYaw_);
+        std::span<const Point3D>(lastGroundFeetNominal_.data(), 6), worldImuRoll, worldImuPitch, imuYaw_);
 
     // Smooth attitude compensation with 150 ms first-order low-pass filter
     constexpr double kAttitudeTauSec = 0.15;
