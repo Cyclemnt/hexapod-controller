@@ -48,7 +48,7 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
-    <!-- Flat Ground Plane (Revêtement laboratoire caoutchouteux : mu = 0.85) -->
+    <!-- Base Ground Plane (Rubberized laboratory flooring: mu = 0.85) -->
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -85,183 +85,346 @@
     </model>
 
     <!-- ===================================================================== -->
-    <!-- 1. CHEMIN AVANT EXISTANT (y = 0.0 m, le long de +X)                   -->
+    <!-- 1. CENTRAL TECHNICAL COURSE (y = 0.0 m, x = 0.90 -> 8.70 m)           -->
     <!-- ===================================================================== -->
 
-    <!-- Low Step / Obstacle: +20 mm high (x = +0.8m) -->
-    <model name="obstacle_step_20mm">
+    <!-- OBSTACLE 1: Lateral Banked Slope (Roll ~8 deg) with entry/exit ramps -->
+    <model name="center_course_roll_slope">
       <static>true</static>
-      <pose>0.8 0.0 0.010 0 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.30 0.80 0.020</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.85</mu>
-                <mu2>0.85</mu2>
-              </ode>
-            </friction>
-          </surface>
+        <!-- Entry ramp -->
+        <collision name="entry_ramp_col">
+          <pose>1.075 0 0.028 0 -0.153 0</pose>
+          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
+          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.30 0.80 0.020</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.9 0.4 0.2 1</ambient>
-            <diffuse>0.9 0.4 0.2 1</diffuse>
-          </material>
+        <visual name="entry_ramp_vis">
+          <pose>1.075 0 0.028 0 -0.153 0</pose>
+          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
+          <material><ambient>0.25 0.55 0.45 1</ambient><diffuse>0.30 0.65 0.52 1</diffuse></material>
+        </visual>
+
+        <!-- Banked deck (roll 0.14 rad ~ 8 deg) -->
+        <collision name="banked_deck_col">
+          <pose>1.80 0 0.055 0.14 0 0</pose>
+          <geometry><box><size>1.10 0.90 0.020</size></box></geometry>
+          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
+        </collision>
+        <visual name="banked_deck_vis">
+          <pose>1.80 0 0.055 0.14 0 0</pose>
+          <geometry><box><size>1.10 0.90 0.020</size></box></geometry>
+          <material><ambient>0.20 0.48 0.38 1</ambient><diffuse>0.25 0.58 0.45 1</diffuse></material>
+        </visual>
+
+        <!-- Exit ramp -->
+        <collision name="exit_ramp_col">
+          <pose>2.525 0 0.028 0 0.153 0</pose>
+          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
+          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
+        </collision>
+        <visual name="exit_ramp_vis">
+          <pose>2.525 0 0.028 0 0.153 0</pose>
+          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
+          <material><ambient>0.25 0.55 0.45 1</ambient><diffuse>0.30 0.65 0.52 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <!-- Trench / Step Down: 20 mm drop simulation (x = +1.5m) -->
-    <model name="depression_ditch_20mm">
+    <!-- OBSTACLE 2: 3-Step Ascending & Descending Stairs (15 -> 30 -> 42 -> 20 mm) -->
+    <model name="center_course_stairs">
       <static>true</static>
-      <pose>1.5 0.0 0.0125 0 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.50 0.80 0.025</size>
-            </box>
-          </geometry>
+        <collision name="step1_col">
+          <pose>3.125 0.0 -0.0025 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.035</size></box></geometry>
           <surface>
-            <friction>
-              <ode>
-                <mu>0.85</mu>
-                <mu2>0.85</mu2>
-              </ode>
-            </friction>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
           </surface>
         </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.50 0.80 0.025</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.6 0.8 1</ambient>
-            <diffuse>0.2 0.6 0.8 1</diffuse>
-          </material>
+        <visual name="step1_vis">
+          <pose>3.125 0.0 0.0075 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.015</size></box></geometry>
+          <material><ambient>0.85 0.55 0.15 1</ambient><diffuse>0.90 0.60 0.20 1</diffuse></material>
+        </visual>
+
+        <collision name="step2_col">
+          <pose>3.375 0.0 0.005 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.050</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="step2_vis">
+          <pose>3.375 0.0 0.015 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.030</size></box></geometry>
+          <material><ambient>0.80 0.45 0.12 1</ambient><diffuse>0.85 0.50 0.15 1</diffuse></material>
+        </visual>
+
+        <collision name="step3_top_col">
+          <pose>3.65 0.0 0.011 0 0 0</pose>
+          <geometry><box><size>0.30 0.90 0.062</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="step3_top_vis">
+          <pose>3.65 0.0 0.021 0 0 0</pose>
+          <geometry><box><size>0.30 0.90 0.042</size></box></geometry>
+          <material><ambient>0.75 0.35 0.10 1</ambient><diffuse>0.80 0.40 0.12 1</diffuse></material>
+        </visual>
+
+        <collision name="step4_down_col">
+          <pose>3.925 0.0 0.0 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.040</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="step4_down_vis">
+          <pose>3.925 0.0 0.010 0 0 0</pose>
+          <geometry><box><size>0.25 0.90 0.020</size></box></geometry>
+          <material><ambient>0.85 0.55 0.15 1</ambient><diffuse>0.90 0.60 0.20 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <!-- Inclined Ramp (x = 1.15m) -->
-    <model name="plateau_access_ramp">
+    <!-- OBSTACLE 3: Asymmetric Stepping Stones Field (14 to 30 mm) -->
+    <model name="center_course_stepping_stones">
       <static>true</static>
-      <pose>1.15 0.0 0.002 -0.10 0 0</pose>
       <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.25 0.80 0.020</size>
-            </box>
-          </geometry>
+        <collision name="stone1_col">
+          <pose>4.45 -0.20 -0.002 0 0 0.15</pose>
+          <geometry><box><size>0.24 0.34 0.036</size></box></geometry>
           <surface>
-            <friction>
-              <ode>
-                <mu>0.85</mu>
-                <mu2>0.85</mu2>
-              </ode>
-            </friction>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
           </surface>
         </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.25 0.80 0.020</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.2 0.6 0.8 1</ambient>
-            <diffuse>0.2 0.6 0.8 1</diffuse>
-          </material>
+        <visual name="stone1_vis">
+          <pose>4.45 -0.20 0.008 0 0 0.15</pose>
+          <geometry><box><size>0.24 0.34 0.016</size></box></geometry>
+          <material><ambient>0.45 0.45 0.50 1</ambient><diffuse>0.55 0.55 0.60 1</diffuse></material>
+        </visual>
+
+        <collision name="stone2_col">
+          <pose>4.65 0.20 0.003 0 0 -0.20</pose>
+          <geometry><box><size>0.24 0.34 0.046</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="stone2_vis">
+          <pose>4.65 0.20 0.013 0 0 -0.20</pose>
+          <geometry><box><size>0.24 0.34 0.026</size></box></geometry>
+          <material><ambient>0.38 0.38 0.42 1</ambient><diffuse>0.48 0.48 0.52 1</diffuse></material>
+        </visual>
+
+        <collision name="stone3_col">
+          <pose>4.92 -0.15 0.005 0 0 0.05</pose>
+          <geometry><box><size>0.22 0.32 0.050</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="stone3_vis">
+          <pose>4.92 -0.15 0.015 0 0 0.05</pose>
+          <geometry><box><size>0.22 0.32 0.030</size></box></geometry>
+          <material><ambient>0.32 0.32 0.36 1</ambient><diffuse>0.42 0.42 0.46 1</diffuse></material>
+        </visual>
+
+        <collision name="stone4_col">
+          <pose>5.15 0.23 -0.003 0 0 0.25</pose>
+          <geometry><box><size>0.25 0.34 0.034</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="stone4_vis">
+          <pose>5.15 0.23 0.007 0 0 0.25</pose>
+          <geometry><box><size>0.25 0.34 0.014</size></box></geometry>
+          <material><ambient>0.48 0.48 0.52 1</ambient><diffuse>0.58 0.58 0.62 1</diffuse></material>
+        </visual>
+
+        <collision name="stone5_col">
+          <pose>5.42 -0.21 0.001 0 0 -0.10</pose>
+          <geometry><box><size>0.26 0.35 0.042</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="stone5_vis">
+          <pose>5.42 -0.21 0.011 0 0 -0.10</pose>
+          <geometry><box><size>0.26 0.35 0.022</size></box></geometry>
+          <material><ambient>0.40 0.40 0.45 1</ambient><diffuse>0.50 0.50 0.55 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- OBSTACLE 4: Asymmetric Chicane Double Ditches (ground-anchored pads) -->
+    <model name="center_course_chicane_ditches">
+      <static>true</static>
+      <link name="link">
+        <collision name="entry_pad_col">
+          <pose>6.10 0.0 0.0025 0 0 0</pose>
+          <geometry><box><size>0.30 0.90 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="entry_pad_vis">
+          <pose>6.10 0.0 0.0125 0 0 0</pose>
+          <geometry><box><size>0.30 0.90 0.025</size></box></geometry>
+          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        </visual>
+
+        <collision name="right_bridge_col">
+          <pose>6.30 -0.225 0.0025 0 0 0</pose>
+          <geometry><box><size>0.12 0.45 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="right_bridge_vis">
+          <pose>6.30 -0.225 0.0125 0 0 0</pose>
+          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
+          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        </visual>
+
+        <collision name="mid_pad_col">
+          <pose>6.48 0.0 0.0025 0 0 0</pose>
+          <geometry><box><size>0.26 0.90 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="mid_pad_vis">
+          <pose>6.48 0.0 0.0125 0 0 0</pose>
+          <geometry><box><size>0.26 0.90 0.025</size></box></geometry>
+          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        </visual>
+
+        <collision name="left_bridge_col">
+          <pose>6.66 0.225 0.0025 0 0 0</pose>
+          <geometry><box><size>0.12 0.45 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="left_bridge_vis">
+          <pose>6.66 0.225 0.0125 0 0 0</pose>
+          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
+          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        </visual>
+
+        <collision name="exit_pad_col">
+          <pose>6.85 0.0 0.0025 0 0 0</pose>
+          <geometry><box><size>0.28 0.90 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="exit_pad_vis">
+          <pose>6.85 0.0 0.0125 0 0 0</pose>
+          <geometry><box><size>0.28 0.90 0.025</size></box></geometry>
+          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- OBSTACLE 5: Elevated Narrow Beam (38 cm width < robot track width) -->
+    <model name="center_course_narrow_beam">
+      <static>true</static>
+      <link name="link">
+        <collision name="beam_entry_col">
+          <pose>7.35 0.0 -0.004 0 0 0</pose>
+          <geometry><box><size>0.16 0.50 0.032</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="beam_entry_vis">
+          <pose>7.35 0.0 0.006 0 0 0</pose>
+          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
+          <material><ambient>0.75 0.18 0.22 1</ambient><diffuse>0.85 0.22 0.26 1</diffuse></material>
+        </visual>
+
+        <collision name="beam_main_col">
+          <pose>7.98 0.0 0.0025 0 0 0</pose>
+          <geometry><box><size>1.10 0.38 0.045</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="beam_main_vis">
+          <pose>7.98 0.0 0.0125 0 0 0</pose>
+          <geometry><box><size>1.10 0.38 0.025</size></box></geometry>
+          <material><ambient>0.68 0.14 0.18 1</ambient><diffuse>0.78 0.18 0.22 1</diffuse></material>
+        </visual>
+
+        <collision name="beam_exit_col">
+          <pose>8.61 0.0 -0.004 0 0 0</pose>
+          <geometry><box><size>0.16 0.50 0.032</size></box></geometry>
+          <surface>
+            <friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction>
+            <contact><ode><kp>1000000</kp><kd>100</kd><max_vel>0.1</max_vel></ode></contact>
+          </surface>
+        </collision>
+        <visual name="beam_exit_vis">
+          <pose>8.61 0.0 0.006 0 0 0</pose>
+          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
+          <material><ambient>0.75 0.18 0.22 1</ambient><diffuse>0.85 0.22 0.26 1</diffuse></material>
         </visual>
       </link>
     </model>
 
     <!-- ===================================================================== -->
-    <!-- 2. PISTE DE REVÊTEMENTS À DROITE (y = -1.30 m, de x = 0.50 à 5.00 m)  -->
+    <!-- 2. SURFACE FRICTION TRACK ON RIGHT (y = -1.35 m, x = 0.50 to 5.00 m)  -->
     <!-- ===================================================================== -->
 
-    <!-- Zone A : Terre compactée (Marron, mu = 0.55, longueur 1.50 m) -->
+    <!-- Zone A: Compacted Dirt (Brown, mu = 0.55) -->
     <model name="terrain_strip_dirt">
       <static>true</static>
-      <pose>1.25 -1.30 0.001 0 0 0</pose>
+      <pose>1.25 -1.35 0.001 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.55</mu>
-                <mu2>0.55</mu2>
-              </ode>
-            </friction>
-          </surface>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <surface><friction><ode><mu>0.55</mu><mu2>0.55</mu2></ode></friction></surface>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.36 0.22 0.11 1</ambient>
-            <diffuse>0.42 0.26 0.13 1</diffuse>
-            <specular>0.05 0.05 0.05 1</specular>
-          </material>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <material><ambient>0.36 0.22 0.11 1</ambient><diffuse>0.42 0.26 0.13 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <!-- Zone B : Carrelage lisse (Blanc avec quadrillage visuel, mu = 0.25, longueur 1.50 m) -->
+    <!-- Zone B: Smooth Tile (White grid, mu = 0.25) -->
     <model name="terrain_strip_tile">
       <static>true</static>
-      <pose>2.75 -1.30 0.001 0 0 0</pose>
+      <pose>2.75 -1.35 0.001 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.25</mu>
-                <mu2>0.25</mu2>
-              </ode>
-            </friction>
-          </surface>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <surface><friction><ode><mu>0.25</mu><mu2>0.25</mu2></ode></friction></surface>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.92 0.94 0.96 1</ambient>
-            <diffuse>0.95 0.97 0.99 1</diffuse>
-            <specular>0.85 0.85 0.90 1</specular>
-          </material>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <material><ambient>0.92 0.94 0.96 1</ambient><diffuse>0.95 0.97 0.99 1</diffuse><specular>0.85 0.85 0.90 1</specular></material>
         </visual>
-        <!-- Joints visuels pour apprécier visuellement le glissement -->
         <visual name="joint_x1">
           <pose>-0.375 0 0.0011 0 0 0</pose>
           <geometry><box><size>0.008 1.00 0.0002</size></box></geometry>
@@ -290,307 +453,784 @@
       </link>
     </model>
 
-    <!-- Zone C : Goudron / Bitume (Noir, mu = 0.70, longueur 1.50 m) -->
+    <!-- Zone C: Asphalt / Tarmac (Black, mu = 0.70) -->
     <model name="terrain_strip_asphalt">
       <static>true</static>
-      <pose>4.25 -1.30 0.001 0 0 0</pose>
+      <pose>4.25 -1.35 0.001 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.70</mu>
-                <mu2>0.70</mu2>
-              </ode>
-            </friction>
-          </surface>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box>
-              <size>1.50 1.00 0.002</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.12 0.12 0.13 1</ambient>
-            <diffuse>0.15 0.15 0.16 1</diffuse>
-            <specular>0.10 0.10 0.10 1</specular>
-          </material>
+          <geometry><box><size>1.50 1.00 0.002</size></box></geometry>
+          <material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.15 0.15 0.16 1</diffuse></material>
         </visual>
       </link>
     </model>
 
     <!-- ===================================================================== -->
-    <!-- 3. PARCOURS D'EMBÛCHES AVANCÉ À GAUCHE (y = +1.45 m, x = 0.40 -> 8.0) -->
+    <!-- 3. CHAOTIC FOREST UNDERGROWTH ON LEFT (y = +1.65 m, x = 0.45 -> 8.10) -->
+    <!--    Optimized collisions (visual-only leaves, no coplanar ground layer)-->
     <!-- ===================================================================== -->
 
-    <!-- EMBÛCHE 1 : Dévers latéral (Roll ~8°) avec rampes d'accès/sortie -->
-    <model name="left_course_roll_slope">
+    <!-- 3A. BASE HUMUS & UNDULATING TERRAIN (combined roll/pitch slopes, mu = 0.44) -->
+    <model name="forest_undulating_soil">
       <static>true</static>
       <link name="link">
-        <!-- Rampe d'accès -->
-        <collision name="entry_ramp_col">
-          <pose>0.575 1.45 0.028 0 -0.153 0</pose>
-          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
+        <!-- Forest humus bed (visual only; ground_plane handles contact) -->
+        <visual name="humus_bed_vis">
+          <pose>4.25 1.65 0.0015 0 0 0</pose>
+          <geometry><box><size>7.70 1.35 0.003</size></box></geometry>
+          <material><ambient>0.24 0.16 0.09 1</ambient><diffuse>0.30 0.20 0.11 1</diffuse></material>
+        </visual>
+
+        <!-- Oblique mound 1 (uphill pitch + left bank) -->
+        <collision name="mound_1_col">
+          <pose>1.05 1.48 0.006 0.08 -0.06 0.35</pose>
+          <geometry><box><size>0.95 0.72 0.028</size></box></geometry>
+          <surface><friction><ode><mu>0.44</mu><mu2>0.44</mu2></ode></friction></surface>
         </collision>
-        <visual name="entry_ramp_vis">
-          <pose>0.575 1.45 0.028 0 -0.153 0</pose>
-          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
+        <visual name="mound_1_vis">
+          <pose>1.05 1.48 0.006 0.08 -0.06 0.35</pose>
+          <geometry><box><size>0.95 0.72 0.028</size></box></geometry>
+          <material><ambient>0.28 0.19 0.10 1</ambient><diffuse>0.35 0.24 0.13 1</diffuse></material>
+        </visual>
+
+        <!-- Oblique mound 2 (reverse bank + downhill pitch) -->
+        <collision name="mound_2_col">
+          <pose>1.95 1.82 0.008 -0.09 0.07 -0.42</pose>
+          <geometry><box><size>1.10 0.78 0.032</size></box></geometry>
+          <surface><friction><ode><mu>0.42</mu><mu2>0.42</mu2></ode></friction></surface>
+        </collision>
+        <visual name="mound_2_vis">
+          <pose>1.95 1.82 0.008 -0.09 0.07 -0.42</pose>
+          <geometry><box><size>1.10 0.78 0.032</size></box></geometry>
+          <material><ambient>0.22 0.18 0.09 1</ambient><diffuse>0.28 0.23 0.12 1</diffuse></material>
+        </visual>
+
+        <!-- Mossy earth embankment 3 -->
+        <collision name="mound_3_col">
+          <pose>3.15 1.52 0.011 0.11 -0.08 0.18</pose>
+          <geometry><box><size>1.25 0.85 0.038</size></box></geometry>
+          <surface><friction><ode><mu>0.46</mu><mu2>0.46</mu2></ode></friction></surface>
+        </collision>
+        <visual name="mound_3_vis">
+          <pose>3.15 1.52 0.011 0.11 -0.08 0.18</pose>
+          <geometry><box><size>1.25 0.85 0.038</size></box></geometry>
+          <material><ambient>0.20 0.25 0.11 1</ambient><diffuse>0.26 0.33 0.14 1</diffuse></material>
+        </visual>
+
+        <!-- Hollow / ridge 4 -->
+        <collision name="mound_4_col">
+          <pose>4.35 1.78 0.009 -0.10 -0.07 0.55</pose>
+          <geometry><box><size>1.15 0.80 0.034</size></box></geometry>
+          <surface><friction><ode><mu>0.44</mu><mu2>0.44</mu2></ode></friction></surface>
+        </collision>
+        <visual name="mound_4_vis">
+          <pose>4.35 1.78 0.009 -0.10 -0.07 0.55</pose>
+          <geometry><box><size>1.15 0.80 0.034</size></box></geometry>
+          <material><ambient>0.27 0.18 0.10 1</ambient><diffuse>0.34 0.22 0.12 1</diffuse></material>
+        </visual>
+
+        <!-- Domed mound 5 (semi-buried flattened sphere) -->
+        <collision name="dome_mound_5_col">
+          <pose>5.45 1.50 -0.115 0.05 0.04 0</pose>
+          <geometry><sphere><radius>0.155</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="dome_mound_5_vis">
+          <pose>5.45 1.50 -0.115 0.05 0.04 0</pose>
+          <geometry><sphere><radius>0.155</radius></sphere></geometry>
+          <material><ambient>0.25 0.17 0.09 1</ambient><diffuse>0.31 0.21 0.11 1</diffuse></material>
+        </visual>
+
+        <!-- Irregular final ridge 6 -->
+        <collision name="mound_6_col">
+          <pose>6.75 1.68 0.012 0.12 0.08 -0.28</pose>
+          <geometry><box><size>1.40 0.90 0.040</size></box></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="mound_6_vis">
+          <pose>6.75 1.68 0.012 0.12 0.08 -0.28</pose>
+          <geometry><box><size>1.40 0.90 0.040</size></box></geometry>
+          <material><ambient>0.21 0.24 0.11 1</ambient><diffuse>0.27 0.31 0.14 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3B. EXPOSED ROOT NETWORK (semi-buried twisted cylinders, mu = 0.45) -->
+    <model name="forest_tangled_roots">
+      <static>true</static>
+      <link name="link">
+        <collision name="root_1a_col">
+          <pose>0.88 1.32 0.008 1.52 0.08 0.65</pose>
+          <geometry><cylinder><radius>0.014</radius><length>0.48</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_1a_vis">
+          <pose>0.88 1.32 0.008 1.52 0.08 0.65</pose>
+          <geometry><cylinder><radius>0.014</radius><length>0.48</length></cylinder></geometry>
+          <material><ambient>0.30 0.19 0.10 1</ambient><diffuse>0.38 0.24 0.13 1</diffuse></material>
+        </visual>
+
+        <collision name="root_1b_col">
+          <pose>1.25 1.62 0.013 1.61 -0.05 1.25</pose>
+          <geometry><cylinder><radius>0.017</radius><length>0.52</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_1b_vis">
+          <pose>1.25 1.62 0.013 1.61 -0.05 1.25</pose>
+          <geometry><cylinder><radius>0.017</radius><length>0.52</length></cylinder></geometry>
+          <material><ambient>0.30 0.19 0.10 1</ambient><diffuse>0.38 0.24 0.13 1</diffuse></material>
+        </visual>
+
+        <collision name="root_1c_col">
+          <pose>1.55 1.92 0.006 1.50 0.09 0.40</pose>
+          <geometry><cylinder><radius>0.011</radius><length>0.45</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_1c_vis">
+          <pose>1.55 1.92 0.006 1.50 0.09 0.40</pose>
+          <geometry><cylinder><radius>0.011</radius><length>0.45</length></cylinder></geometry>
+          <material><ambient>0.30 0.19 0.10 1</ambient><diffuse>0.38 0.24 0.13 1</diffuse></material>
+        </visual>
+
+        <collision name="root_2a_col">
+          <pose>2.65 1.85 0.015 1.63 0.06 -0.85</pose>
+          <geometry><cylinder><radius>0.020</radius><length>0.60</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_2a_vis">
+          <pose>2.65 1.85 0.015 1.63 0.06 -0.85</pose>
+          <geometry><cylinder><radius>0.020</radius><length>0.60</length></cylinder></geometry>
+          <material><ambient>0.26 0.16 0.08 1</ambient><diffuse>0.33 0.20 0.10 1</diffuse></material>
+        </visual>
+
+        <collision name="root_2b_col">
+          <pose>2.98 1.42 0.011 1.51 -0.08 -0.25</pose>
+          <geometry><cylinder><radius>0.015</radius><length>0.55</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_2b_vis">
+          <pose>2.98 1.42 0.011 1.51 -0.08 -0.25</pose>
+          <geometry><cylinder><radius>0.015</radius><length>0.55</length></cylinder></geometry>
+          <material><ambient>0.26 0.16 0.08 1</ambient><diffuse>0.33 0.20 0.10 1</diffuse></material>
+        </visual>
+
+        <collision name="root_3a_col">
+          <pose>4.85 1.38 0.012 1.54 0.07 0.95</pose>
+          <geometry><cylinder><radius>0.016</radius><length>0.58</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_3a_vis">
+          <pose>4.85 1.38 0.012 1.54 0.07 0.95</pose>
+          <geometry><cylinder><radius>0.016</radius><length>0.58</length></cylinder></geometry>
+          <material><ambient>0.28 0.17 0.09 1</ambient><diffuse>0.36 0.22 0.11 1</diffuse></material>
+        </visual>
+
+        <collision name="root_3b_col">
+          <pose>5.18 1.74 0.016 1.62 -0.06 0.22</pose>
+          <geometry><cylinder><radius>0.019</radius><length>0.62</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_3b_vis">
+          <pose>5.18 1.74 0.016 1.62 -0.06 0.22</pose>
+          <geometry><cylinder><radius>0.019</radius><length>0.62</length></cylinder></geometry>
+          <material><ambient>0.28 0.17 0.09 1</ambient><diffuse>0.36 0.22 0.11 1</diffuse></material>
+        </visual>
+
+        <collision name="root_3c_col">
+          <pose>5.52 1.98 0.008 1.49 0.09 -0.60</pose>
+          <geometry><cylinder><radius>0.012</radius><length>0.44</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_3c_vis">
+          <pose>5.52 1.98 0.008 1.49 0.09 -0.60</pose>
+          <geometry><cylinder><radius>0.012</radius><length>0.44</length></cylinder></geometry>
+          <material><ambient>0.28 0.17 0.09 1</ambient><diffuse>0.36 0.22 0.11 1</diffuse></material>
+        </visual>
+
+        <collision name="root_4a_col">
+          <pose>7.05 1.55 0.014 1.60 0.05 1.15</pose>
+          <geometry><cylinder><radius>0.018</radius><length>0.68</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="root_4a_vis">
+          <pose>7.05 1.55 0.014 1.60 0.05 1.15</pose>
+          <geometry><cylinder><radius>0.018</radius><length>0.68</length></cylinder></geometry>
+          <material><ambient>0.29 0.18 0.09 1</ambient><diffuse>0.37 0.23 0.12 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3C. CROSSED & OVERHANGING DEAD BRANCHES (mu = 0.45) -->
+    <model name="forest_fallen_branches">
+      <static>true</static>
+      <link name="link">
+        <collision name="branch_1_col">
+          <pose>0.65 1.72 0.014 1.57 0.03 0.48</pose>
+          <geometry><cylinder><radius>0.013</radius><length>0.65</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_1_vis">
+          <pose>0.65 1.72 0.014 1.57 0.03 0.48</pose>
+          <geometry><cylinder><radius>0.013</radius><length>0.65</length></cylinder></geometry>
+          <material><ambient>0.36 0.25 0.14 1</ambient><diffuse>0.45 0.31 0.18 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_2_col">
+          <pose>1.42 1.50 0.025 1.51 -0.07 -0.72</pose>
+          <geometry><cylinder><radius>0.016</radius><length>0.74</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_2_vis">
+          <pose>1.42 1.50 0.025 1.51 -0.07 -0.72</pose>
+          <geometry><cylinder><radius>0.016</radius><length>0.74</length></cylinder></geometry>
+          <material><ambient>0.32 0.22 0.12 1</ambient><diffuse>0.40 0.27 0.15 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_3_col">
+          <pose>2.25 1.45 0.022 1.57 0.02 0.20</pose>
+          <geometry><cylinder><radius>0.022</radius><length>0.68</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.48</mu><mu2>0.48</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_3_vis">
+          <pose>2.25 1.45 0.022 1.57 0.02 0.20</pose>
+          <geometry><cylinder><radius>0.022</radius><length>0.68</length></cylinder></geometry>
+          <material><ambient>0.29 0.20 0.11 1</ambient><diffuse>0.36 0.25 0.14 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_4_col">
+          <pose>2.32 1.62 0.036 1.63 0.06 1.10</pose>
+          <geometry><cylinder><radius>0.009</radius><length>0.55</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.42</mu><mu2>0.42</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_4_vis">
+          <pose>2.32 1.62 0.036 1.63 0.06 1.10</pose>
+          <geometry><cylinder><radius>0.009</radius><length>0.55</length></cylinder></geometry>
+          <material><ambient>0.40 0.29 0.17 1</ambient><diffuse>0.50 0.36 0.21 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_5_col">
+          <pose>3.45 1.75 0.026 1.50 0.08 -0.55</pose>
+          <geometry><cylinder><radius>0.015</radius><length>0.88</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_5_vis">
+          <pose>3.45 1.75 0.026 1.50 0.08 -0.55</pose>
+          <geometry><cylinder><radius>0.015</radius><length>0.88</length></cylinder></geometry>
+          <material><ambient>0.33 0.23 0.13 1</ambient><diffuse>0.42 0.29 0.16 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_6_col">
+          <pose>4.10 1.42 0.018 1.57 -0.04 0.85</pose>
+          <geometry><cylinder><radius>0.014</radius><length>0.60</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.45</mu><mu2>0.45</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_6_vis">
+          <pose>4.10 1.42 0.018 1.57 -0.04 0.85</pose>
+          <geometry><cylinder><radius>0.014</radius><length>0.60</length></cylinder></geometry>
+          <material><ambient>0.35 0.24 0.14 1</ambient><diffuse>0.44 0.30 0.17 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_7_col">
+          <pose>4.18 1.52 0.032 1.53 0.06 -0.30</pose>
+          <geometry><cylinder><radius>0.011</radius><length>0.52</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.44</mu><mu2>0.44</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_7_vis">
+          <pose>4.18 1.52 0.032 1.53 0.06 -0.30</pose>
+          <geometry><cylinder><radius>0.011</radius><length>0.52</length></cylinder></geometry>
+          <material><ambient>0.38 0.27 0.15 1</ambient><diffuse>0.48 0.34 0.19 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_8_col">
+          <pose>5.85 1.65 0.024 1.57 0.02 0.62</pose>
+          <geometry><cylinder><radius>0.024</radius><length>0.95</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.50</mu><mu2>0.50</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_8_vis">
+          <pose>5.85 1.65 0.024 1.57 0.02 0.62</pose>
+          <geometry><cylinder><radius>0.024</radius><length>0.95</length></cylinder></geometry>
+          <material><ambient>0.27 0.18 0.10 1</ambient><diffuse>0.34 0.23 0.12 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_9_col">
+          <pose>6.02 1.48 0.042 1.49 -0.09 -0.45</pose>
+          <geometry><cylinder><radius>0.012</radius><length>0.62</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.44</mu><mu2>0.44</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_9_vis">
+          <pose>6.02 1.48 0.042 1.49 -0.09 -0.45</pose>
+          <geometry><cylinder><radius>0.012</radius><length>0.62</length></cylinder></geometry>
+          <material><ambient>0.36 0.25 0.14 1</ambient><diffuse>0.45 0.31 0.18 1</diffuse></material>
+        </visual>
+
+        <collision name="branch_10_col">
+          <pose>7.55 1.60 0.022 1.57 0.04 -0.35</pose>
+          <geometry><cylinder><radius>0.017</radius><length>0.82</length></cylinder></geometry>
+          <surface><friction><ode><mu>0.46</mu><mu2>0.46</mu2></ode></friction></surface>
+        </collision>
+        <visual name="branch_10_vis">
+          <pose>7.55 1.60 0.022 1.57 0.04 -0.35</pose>
+          <geometry><cylinder><radius>0.017</radius><length>0.82</length></cylinder></geometry>
+          <material><ambient>0.31 0.21 0.12 1</ambient><diffuse>0.39 0.26 0.15 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3D. PEBBLES, ANGULAR STONES & SCREE (mu = 0.68 - 0.75) -->
+    <model name="forest_rocks_and_stones">
+      <static>true</static>
+      <link name="link">
+        <collision name="rock_1_col">
+          <pose>0.78 1.92 0.012 0.22 -0.18 0.45</pose>
+          <geometry><box><size>0.14 0.11 0.032</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_1_vis">
+          <pose>0.78 1.92 0.012 0.22 -0.18 0.45</pose>
+          <geometry><box><size>0.14 0.11 0.032</size></box></geometry>
+          <material><ambient>0.42 0.43 0.45 1</ambient><diffuse>0.52 0.53 0.55 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_2_col">
+          <pose>1.12 1.26 0.004 0 0 0</pose>
+          <geometry><sphere><radius>0.034</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.68</mu><mu2>0.68</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_2_vis">
+          <pose>1.12 1.26 0.004 0 0 0</pose>
+          <geometry><sphere><radius>0.034</radius></sphere></geometry>
+          <material><ambient>0.38 0.39 0.40 1</ambient><diffuse>0.47 0.48 0.50 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_3_col">
+          <pose>1.68 1.38 0.018 -0.25 0.30 1.10</pose>
+          <geometry><box><size>0.18 0.13 0.044</size></box></geometry>
+          <surface><friction><ode><mu>0.72</mu><mu2>0.72</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_3_vis">
+          <pose>1.68 1.38 0.018 -0.25 0.30 1.10</pose>
+          <geometry><box><size>0.18 0.13 0.044</size></box></geometry>
+          <material><ambient>0.35 0.36 0.38 1</ambient><diffuse>0.44 0.45 0.47 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_4_col">
+          <pose>1.82 1.66 0.014 0.15 0.22 -0.60</pose>
+          <geometry><box><size>0.12 0.09 0.030</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_4_vis">
+          <pose>1.82 1.66 0.014 0.15 0.22 -0.60</pose>
+          <geometry><box><size>0.12 0.09 0.030</size></box></geometry>
+          <material><ambient>0.45 0.44 0.42 1</ambient><diffuse>0.55 0.54 0.52 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_5_col">
+          <pose>2.48 1.98 0.022 0.32 -0.20 0.80</pose>
+          <geometry><box><size>0.22 0.17 0.056</size></box></geometry>
+          <surface><friction><ode><mu>0.74</mu><mu2>0.74</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_5_vis">
+          <pose>2.48 1.98 0.022 0.32 -0.20 0.80</pose>
+          <geometry><box><size>0.22 0.17 0.056</size></box></geometry>
+          <material><ambient>0.33 0.34 0.36 1</ambient><diffuse>0.42 0.43 0.45 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_6_col">
+          <pose>3.08 1.24 0.016 -0.18 0.24 0.30</pose>
+          <geometry><box><size>0.16 0.14 0.038</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_6_vis">
+          <pose>3.08 1.24 0.016 -0.18 0.24 0.30</pose>
+          <geometry><box><size>0.16 0.14 0.038</size></box></geometry>
+          <material><ambient>0.40 0.41 0.43 1</ambient><diffuse>0.50 0.51 0.53 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_7_col">
+          <pose>3.32 1.58 0.012 0 0 0</pose>
+          <geometry><sphere><radius>0.038</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.68</mu><mu2>0.68</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_7_vis">
+          <pose>3.32 1.58 0.012 0 0 0</pose>
+          <geometry><sphere><radius>0.038</radius></sphere></geometry>
+          <material><ambient>0.37 0.38 0.39 1</ambient><diffuse>0.46 0.47 0.49 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_8_col">
+          <pose>3.58 1.36 0.020 0.28 0.15 -0.95</pose>
+          <geometry><box><size>0.19 0.12 0.046</size></box></geometry>
+          <surface><friction><ode><mu>0.73</mu><mu2>0.73</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_8_vis">
+          <pose>3.58 1.36 0.020 0.28 0.15 -0.95</pose>
+          <geometry><box><size>0.19 0.12 0.046</size></box></geometry>
+          <material><ambient>0.34 0.35 0.37 1</ambient><diffuse>0.43 0.44 0.46 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_9_col">
+          <pose>4.48 1.92 0.019 -0.22 -0.26 0.50</pose>
+          <geometry><box><size>0.17 0.15 0.045</size></box></geometry>
+          <surface><friction><ode><mu>0.72</mu><mu2>0.72</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_9_vis">
+          <pose>4.48 1.92 0.019 -0.22 -0.26 0.50</pose>
+          <geometry><box><size>0.17 0.15 0.045</size></box></geometry>
+          <material><ambient>0.41 0.40 0.39 1</ambient><diffuse>0.51 0.50 0.49 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_10_col">
+          <pose>4.62 1.62 0.013 0.14 -0.19 1.30</pose>
+          <geometry><box><size>0.13 0.10 0.032</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_10_vis">
+          <pose>4.62 1.62 0.013 0.14 -0.19 1.30</pose>
+          <geometry><box><size>0.13 0.10 0.032</size></box></geometry>
+          <material><ambient>0.44 0.45 0.47 1</ambient><diffuse>0.54 0.55 0.57 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_11_col">
+          <pose>4.95 1.22 0.008 0 0 0</pose>
+          <geometry><sphere><radius>0.035</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.68</mu><mu2>0.68</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_11_vis">
+          <pose>4.95 1.22 0.008 0 0 0</pose>
+          <geometry><sphere><radius>0.035</radius></sphere></geometry>
+          <material><ambient>0.36 0.37 0.38 1</ambient><diffuse>0.45 0.46 0.48 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_12_col">
+          <pose>6.35 1.85 0.021 0.26 0.18 -0.40</pose>
+          <geometry><box><size>0.20 0.16 0.050</size></box></geometry>
+          <surface><friction><ode><mu>0.74</mu><mu2>0.74</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_12_vis">
+          <pose>6.35 1.85 0.021 0.26 0.18 -0.40</pose>
+          <geometry><box><size>0.20 0.16 0.050</size></box></geometry>
+          <material><ambient>0.35 0.36 0.37 1</ambient><diffuse>0.44 0.45 0.46 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_13_col">
+          <pose>6.52 1.32 0.017 -0.20 0.28 0.75</pose>
+          <geometry><box><size>0.15 0.13 0.040</size></box></geometry>
+          <surface><friction><ode><mu>0.71</mu><mu2>0.71</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_13_vis">
+          <pose>6.52 1.32 0.017 -0.20 0.28 0.75</pose>
+          <geometry><box><size>0.15 0.13 0.040</size></box></geometry>
+          <material><ambient>0.41 0.42 0.44 1</ambient><diffuse>0.51 0.52 0.54 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_14_col">
+          <pose>7.28 1.88 0.014 0 0 0</pose>
+          <geometry><sphere><radius>0.040</radius></sphere></geometry>
+          <surface><friction><ode><mu>0.68</mu><mu2>0.68</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_14_vis">
+          <pose>7.28 1.88 0.014 0 0 0</pose>
+          <geometry><sphere><radius>0.040</radius></sphere></geometry>
+          <material><ambient>0.38 0.38 0.40 1</ambient><diffuse>0.47 0.47 0.49 1</diffuse></material>
+        </visual>
+
+        <collision name="rock_15_col">
+          <pose>7.78 1.38 0.016 0.19 -0.22 0.90</pose>
+          <geometry><box><size>0.17 0.12 0.036</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="rock_15_vis">
+          <pose>7.78 1.38 0.016 0.19 -0.22 0.90</pose>
+          <geometry><box><size>0.17 0.12 0.036</size></box></geometry>
+          <material><ambient>0.43 0.42 0.41 1</ambient><diffuse>0.53 0.52 0.51 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3E. WET DEAD LEAVES CARPET (visual only to reduce DART/FCL load) -->
+    <model name="forest_dead_leaves">
+      <static>true</static>
+      <link name="link">
+        <visual name="leaves_1_vis">
+          <pose>0.92 1.68 0.005 0.05 -0.04 0.30</pose>
+          <geometry><box><size>0.36 0.32 0.003</size></box></geometry>
+          <material><ambient>0.48 0.26 0.08 1</ambient><diffuse>0.60 0.33 0.10 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_2_vis">
+          <pose>1.52 1.28 0.004 -0.04 0.05 -0.50</pose>
+          <geometry><box><size>0.42 0.34 0.003</size></box></geometry>
+          <material><ambient>0.42 0.22 0.07 1</ambient><diffuse>0.52 0.28 0.09 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_3_vis">
+          <pose>2.12 1.95 0.006 0.06 0.04 0.70</pose>
+          <geometry><box><size>0.38 0.30 0.003</size></box></geometry>
+          <material><ambient>0.52 0.34 0.09 1</ambient><diffuse>0.65 0.42 0.11 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_4_vis">
+          <pose>2.82 1.62 0.005 -0.05 -0.03 0.15</pose>
+          <geometry><box><size>0.44 0.36 0.003</size></box></geometry>
+          <material><ambient>0.38 0.24 0.09 1</ambient><diffuse>0.48 0.30 0.11 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_5_vis">
+          <pose>3.78 1.88 0.005 0.04 0.06 -0.35</pose>
+          <geometry><box><size>0.40 0.34 0.003</size></box></geometry>
+          <material><ambient>0.50 0.28 0.08 1</ambient><diffuse>0.62 0.35 0.10 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_6_vis">
+          <pose>4.42 1.26 0.004 -0.03 0.04 0.85</pose>
+          <geometry><box><size>0.38 0.32 0.003</size></box></geometry>
+          <material><ambient>0.44 0.25 0.08 1</ambient><diffuse>0.55 0.31 0.10 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_7_vis">
+          <pose>5.22 1.32 0.005 0.05 -0.05 -0.20</pose>
+          <geometry><box><size>0.45 0.35 0.003</size></box></geometry>
+          <material><ambient>0.47 0.30 0.09 1</ambient><diffuse>0.58 0.37 0.11 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_8_vis">
+          <pose>6.15 1.62 0.005 -0.06 0.03 0.42</pose>
+          <geometry><box><size>0.42 0.36 0.003</size></box></geometry>
+          <material><ambient>0.40 0.22 0.07 1</ambient><diffuse>0.50 0.28 0.09 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_9_vis">
+          <pose>6.92 1.96 0.005 0.04 -0.04 -0.65</pose>
+          <geometry><box><size>0.40 0.32 0.003</size></box></geometry>
+          <material><ambient>0.51 0.32 0.09 1</ambient><diffuse>0.64 0.40 0.11 1</diffuse></material>
+        </visual>
+
+        <visual name="leaves_10_vis">
+          <pose>7.42 1.30 0.004 -0.04 0.05 0.25</pose>
+          <geometry><box><size>0.38 0.34 0.003</size></box></geometry>
+          <material><ambient>0.45 0.26 0.08 1</ambient><diffuse>0.56 0.33 0.10 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ===================================================================== -->
+    <!-- 4. NEGATIVE-X CLEARANCE & STEEP RAMP TRACK (y = 0.0 m, x = -1.48..-6.84) -->
+    <!-- ===================================================================== -->
+
+    <!-- TEST 4A: Low-Clearance Archway (155 mm underside height for 90 mm thick chassis) -->
+    <model name="neg_x_low_arch">
+      <static>true</static>
+      <link name="link">
+        <collision name="left_pillar_col">
+          <pose>-1.60 0.52 0.085 0 0 0</pose>
+          <geometry><box><size>0.24 0.10 0.210</size></box></geometry>
+        </collision>
+        <visual name="left_pillar_vis">
+          <pose>-1.60 0.52 0.085 0 0 0</pose>
+          <geometry><box><size>0.24 0.10 0.210</size></box></geometry>
+          <material><ambient>0.22 0.35 0.55 1</ambient><diffuse>0.28 0.45 0.70 1</diffuse></material>
+        </visual>
+
+        <collision name="right_pillar_col">
+          <pose>-1.60 -0.52 0.085 0 0 0</pose>
+          <geometry><box><size>0.24 0.10 0.210</size></box></geometry>
+        </collision>
+        <visual name="right_pillar_vis">
+          <pose>-1.60 -0.52 0.085 0 0 0</pose>
+          <geometry><box><size>0.24 0.10 0.210</size></box></geometry>
+          <material><ambient>0.22 0.35 0.55 1</ambient><diffuse>0.28 0.45 0.70 1</diffuse></material>
+        </visual>
+
+        <collision name="crossbar_col">
+          <pose>-1.60 0.0 0.1725 0 0 0</pose>
+          <geometry><box><size>0.24 1.14 0.035</size></box></geometry>
+        </collision>
+        <visual name="crossbar_vis">
+          <pose>-1.60 0.0 0.1725 0 0 0</pose>
+          <geometry><box><size>0.24 1.14 0.035</size></box></geometry>
+          <material><ambient>0.85 0.25 0.20 1</ambient><diffuse>0.95 0.30 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- TEST 4B: Steep Longitudinal Ramp (15 deg -> 22 deg ascent, crest, 18 deg descent) -->
+    <model name="neg_x_steep_ramp">
+      <static>true</static>
+      <link name="link">
+        <!-- Stage 1: 15 deg ascent (x = -2.80 -> -3.70 m, z = 0 -> 0.241 m) -->
+        <collision name="ramp_15deg_col">
+          <pose>-3.2655 0.0 0.0626 0 0.2618 0</pose>
+          <geometry><box><size>0.9317 1.00 0.120</size></box></geometry>
+          <surface><friction><ode><mu>0.70</mu><mu2>0.70</mu2></ode></friction></surface>
+        </collision>
+        <visual name="ramp_15deg_vis">
+          <pose>-3.2655 0.0 0.0626 0 0.2618 0</pose>
+          <geometry><box><size>0.9317 1.00 0.120</size></box></geometry>
+          <material><ambient>0.20 0.50 0.55 1</ambient><diffuse>0.25 0.62 0.68 1</diffuse></material>
+        </visual>
+
+        <!-- Stage 2: 22 deg steep ascent (x = -3.70 -> -4.50 m, z = 0.241 -> 0.564 m) -->
+        <collision name="ramp_22deg_col">
+          <pose>-4.1225 0.0 0.3472 0 0.3840 0</pose>
+          <geometry><box><size>0.8628 1.00 0.120</size></box></geometry>
+          <surface><friction><ode><mu>0.65</mu><mu2>0.65</mu2></ode></friction></surface>
+        </collision>
+        <visual name="ramp_22deg_vis">
+          <pose>-4.1225 0.0 0.3472 0 0.3840 0</pose>
+          <geometry><box><size>0.8628 1.00 0.120</size></box></geometry>
+          <material><ambient>0.75 0.32 0.18 1</ambient><diffuse>0.88 0.38 0.22 1</diffuse></material>
+        </visual>
+
+        <!-- Top Crest Platform (x = -4.50 -> -5.10 m, z = 0.564 m) -->
+        <collision name="top_crest_col">
+          <pose>-4.80 0.0 0.5044 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.120</size></box></geometry>
+          <surface><friction><ode><mu>0.75</mu><mu2>0.75</mu2></ode></friction></surface>
+        </collision>
+        <visual name="top_crest_vis">
+          <pose>-4.80 0.0 0.5044 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.120</size></box></geometry>
           <material><ambient>0.25 0.55 0.45 1</ambient><diffuse>0.30 0.65 0.52 1</diffuse></material>
         </visual>
 
-        <!-- Tablier en dévers latéral (roulis 0.14 rad ~ 8 deg) -->
-        <collision name="banked_deck_col">
-          <pose>1.30 1.45 0.055 0.14 0 0</pose>
-          <geometry><box><size>1.10 0.90 0.020</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
+        <!-- Descent: 18 deg slope back to ground (x = -5.10 -> -6.84 m) -->
+        <collision name="descent_18deg_col">
+          <pose>-5.9500 0.0 0.2251 0 -0.3142 0</pose>
+          <geometry><box><size>1.8264 1.00 0.120</size></box></geometry>
+          <surface><friction><ode><mu>0.68</mu><mu2>0.68</mu2></ode></friction></surface>
         </collision>
-        <visual name="banked_deck_vis">
-          <pose>1.30 1.45 0.055 0.14 0 0</pose>
-          <geometry><box><size>1.10 0.90 0.020</size></box></geometry>
-          <material><ambient>0.20 0.48 0.38 1</ambient><diffuse>0.25 0.58 0.45 1</diffuse></material>
-        </visual>
-
-        <!-- Rampe de sortie -->
-        <collision name="exit_ramp_col">
-          <pose>2.025 1.45 0.028 0 0.153 0</pose>
-          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="exit_ramp_vis">
-          <pose>2.025 1.45 0.028 0 0.153 0</pose>
-          <geometry><box><size>0.36 0.90 0.020</size></box></geometry>
-          <material><ambient>0.25 0.55 0.45 1</ambient><diffuse>0.30 0.65 0.52 1</diffuse></material>
+        <visual name="descent_18deg_vis">
+          <pose>-5.9500 0.0 0.2251 0 -0.3142 0</pose>
+          <geometry><box><size>1.8264 1.00 0.120</size></box></geometry>
+          <material><ambient>0.20 0.50 0.55 1</ambient><diffuse>0.25 0.62 0.68 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <!-- EMBÛCHE 2 : Escalier 3 marches montantes & descendantes (15 -> 30 -> 42 -> 20 mm) -->
-    <model name="left_course_stairs">
+    <!-- ===================================================================== -->
+    <!-- 5. NEGATIVE-X GAP & REGULATION STAIRS (y = -1.50 m, x = -0.80..-4.88) -->
+    <!-- ===================================================================== -->
+
+    <!-- TEST 5A: 180 mm Full-Width Trench / Gap -->
+    <model name="neg_x_trench">
       <static>true</static>
       <link name="link">
-        <collision name="step1_col">
-          <pose>2.625 1.45 0.0075 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.015</size></box></geometry>
+        <collision name="entry_platform_col">
+          <pose>-1.10 -1.50 0.005 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.080</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="step1_vis">
-          <pose>2.625 1.45 0.0075 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.015</size></box></geometry>
-          <material><ambient>0.85 0.55 0.15 1</ambient><diffuse>0.90 0.60 0.20 1</diffuse></material>
+        <visual name="entry_platform_vis">
+          <pose>-1.10 -1.50 0.005 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.080</size></box></geometry>
+          <material><ambient>0.48 0.24 0.52 1</ambient><diffuse>0.58 0.30 0.62 1</diffuse></material>
         </visual>
 
-        <collision name="step2_col">
-          <pose>2.875 1.45 0.015 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.030</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="step2_vis">
-          <pose>2.875 1.45 0.015 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.030</size></box></geometry>
-          <material><ambient>0.80 0.45 0.12 1</ambient><diffuse>0.85 0.50 0.15 1</diffuse></material>
-        </visual>
+        <!-- 180 mm open gap between x = -1.40 m and x = -1.58 m -->
 
-        <collision name="step3_top_col">
-          <pose>3.15 1.45 0.021 0 0 0</pose>
-          <geometry><box><size>0.30 0.90 0.042</size></box></geometry>
+        <collision name="exit_platform_col">
+          <pose>-1.88 -1.50 0.005 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.080</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="step3_top_vis">
-          <pose>3.15 1.45 0.021 0 0 0</pose>
-          <geometry><box><size>0.30 0.90 0.042</size></box></geometry>
-          <material><ambient>0.75 0.35 0.10 1</ambient><diffuse>0.80 0.40 0.12 1</diffuse></material>
-        </visual>
-
-        <collision name="step4_down_col">
-          <pose>3.425 1.45 0.010 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.020</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="step4_down_vis">
-          <pose>3.425 1.45 0.010 0 0 0</pose>
-          <geometry><box><size>0.25 0.90 0.020</size></box></geometry>
-          <material><ambient>0.85 0.55 0.15 1</ambient><diffuse>0.90 0.60 0.20 1</diffuse></material>
+        <visual name="exit_platform_vis">
+          <pose>-1.88 -1.50 0.005 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.080</size></box></geometry>
+          <material><ambient>0.48 0.24 0.52 1</ambient><diffuse>0.58 0.30 0.62 1</diffuse></material>
         </visual>
       </link>
     </model>
 
-    <!-- EMBÛCHE 3 : Champ de plots asymétriques / Stepping stones (14 à 30 mm) -->
-    <model name="left_course_stepping_stones">
+    <!-- TEST 5B: Regulation Public Building Stairs (4 steps: 160 mm rise x 280 mm tread) -->
+    <model name="neg_x_erp_stairs">
       <static>true</static>
       <link name="link">
-        <!-- Plot 1 (droite, 16 mm) -->
-        <collision name="stone1_col">
-          <pose>3.95 1.25 0.008 0 0 0.15</pose>
-          <geometry><box><size>0.24 0.34 0.016</size></box></geometry>
+        <!-- Step 1 up: top at 0.160 m -->
+        <collision name="step1_up_col">
+          <pose>-2.74 -1.50 0.060 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.200</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="stone1_vis">
-          <pose>3.95 1.25 0.008 0 0 0.15</pose>
-          <geometry><box><size>0.24 0.34 0.016</size></box></geometry>
-          <material><ambient>0.45 0.45 0.50 1</ambient><diffuse>0.55 0.55 0.60 1</diffuse></material>
+        <visual name="step1_up_vis">
+          <pose>-2.74 -1.50 0.060 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.200</size></box></geometry>
+          <material><ambient>0.65 0.62 0.58 1</ambient><diffuse>0.75 0.72 0.68 1</diffuse></material>
         </visual>
 
-        <!-- Plot 2 (gauche, 26 mm) -->
-        <collision name="stone2_col">
-          <pose>4.15 1.65 0.013 0 0 -0.20</pose>
-          <geometry><box><size>0.24 0.34 0.026</size></box></geometry>
+        <!-- Step 2 up: top at 0.320 m -->
+        <collision name="step2_up_col">
+          <pose>-3.02 -1.50 0.140 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.360</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="stone2_vis">
-          <pose>4.15 1.65 0.013 0 0 -0.20</pose>
-          <geometry><box><size>0.24 0.34 0.026</size></box></geometry>
-          <material><ambient>0.38 0.38 0.42 1</ambient><diffuse>0.48 0.48 0.52 1</diffuse></material>
+        <visual name="step2_up_vis">
+          <pose>-3.02 -1.50 0.140 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.360</size></box></geometry>
+          <material><ambient>0.58 0.55 0.52 1</ambient><diffuse>0.68 0.65 0.62 1</diffuse></material>
         </visual>
 
-        <!-- Plot 3 (centre-droite, 30 mm) -->
-        <collision name="stone3_col">
-          <pose>4.42 1.30 0.015 0 0 0.05</pose>
-          <geometry><box><size>0.22 0.32 0.030</size></box></geometry>
+        <!-- Step 3 up: top at 0.480 m -->
+        <collision name="step3_up_col">
+          <pose>-3.30 -1.50 0.220 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.520</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="stone3_vis">
-          <pose>4.42 1.30 0.015 0 0 0.05</pose>
-          <geometry><box><size>0.22 0.32 0.030</size></box></geometry>
-          <material><ambient>0.32 0.32 0.36 1</ambient><diffuse>0.42 0.42 0.46 1</diffuse></material>
+        <visual name="step3_up_vis">
+          <pose>-3.30 -1.50 0.220 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.520</size></box></geometry>
+          <material><ambient>0.65 0.62 0.58 1</ambient><diffuse>0.75 0.72 0.68 1</diffuse></material>
         </visual>
 
-        <!-- Plot 4 (gauche, 14 mm) -->
-        <collision name="stone4_col">
-          <pose>4.65 1.68 0.007 0 0 0.25</pose>
-          <geometry><box><size>0.25 0.34 0.014</size></box></geometry>
+        <!-- Step 4 / Top Landing: top at 0.640 m (600 mm deep) -->
+        <collision name="top_landing_col">
+          <pose>-3.74 -1.50 0.300 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.680</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="stone4_vis">
-          <pose>4.65 1.68 0.007 0 0 0.25</pose>
-          <geometry><box><size>0.25 0.34 0.014</size></box></geometry>
-          <material><ambient>0.48 0.48 0.52 1</ambient><diffuse>0.58 0.58 0.62 1</diffuse></material>
+        <visual name="top_landing_vis">
+          <pose>-3.74 -1.50 0.300 0 0 0</pose>
+          <geometry><box><size>0.60 1.00 0.680</size></box></geometry>
+          <material><ambient>0.52 0.50 0.48 1</ambient><diffuse>0.62 0.60 0.58 1</diffuse></material>
         </visual>
 
-        <!-- Plot 5 (droite, 22 mm) -->
-        <collision name="stone5_col">
-          <pose>4.92 1.24 0.011 0 0 -0.10</pose>
-          <geometry><box><size>0.26 0.35 0.022</size></box></geometry>
+        <!-- Step 5 down: top at 0.480 m -->
+        <collision name="step5_down_col">
+          <pose>-4.18 -1.50 0.220 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.520</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="stone5_vis">
-          <pose>4.92 1.24 0.011 0 0 -0.10</pose>
-          <geometry><box><size>0.26 0.35 0.022</size></box></geometry>
-          <material><ambient>0.40 0.40 0.45 1</ambient><diffuse>0.50 0.50 0.55 1</diffuse></material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- EMBÛCHE 4 : Double fosse asymétrique en chicane (trous de 65 mm) -->
-    <model name="left_course_chicane_ditches">
-      <static>true</static>
-      <link name="link">
-        <!-- Dalle d'entrée (hauteur 25 mm) -->
-        <collision name="entry_pad_col">
-          <pose>5.60 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.30 0.90 0.025</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="entry_pad_vis">
-          <pose>5.60 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.30 0.90 0.025</size></box></geometry>
-          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        <visual name="step5_down_vis">
+          <pose>-4.18 -1.50 0.220 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.520</size></box></geometry>
+          <material><ambient>0.65 0.62 0.58 1</ambient><diffuse>0.75 0.72 0.68 1</diffuse></material>
         </visual>
 
-        <!-- Pont côté droit uniquement (fosse de 65 mm à gauche en x = 5.78) -->
-        <collision name="right_bridge_col">
-          <pose>5.80 1.225 0.0125 0 0 0</pose>
-          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
+        <!-- Step 6 down: top at 0.320 m -->
+        <collision name="step6_down_col">
+          <pose>-4.46 -1.50 0.140 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.360</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="right_bridge_vis">
-          <pose>5.80 1.225 0.0125 0 0 0</pose>
-          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
-          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
+        <visual name="step6_down_vis">
+          <pose>-4.46 -1.50 0.140 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.360</size></box></geometry>
+          <material><ambient>0.58 0.55 0.52 1</ambient><diffuse>0.68 0.65 0.62 1</diffuse></material>
         </visual>
 
-        <!-- Îlot central -->
-        <collision name="mid_pad_col">
-          <pose>5.98 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.26 0.90 0.025</size></box></geometry>
+        <!-- Step 7 down: top at 0.160 m -->
+        <collision name="step7_down_col">
+          <pose>-4.74 -1.50 0.060 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.200</size></box></geometry>
           <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
         </collision>
-        <visual name="mid_pad_vis">
-          <pose>5.98 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.26 0.90 0.025</size></box></geometry>
-          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
-        </visual>
-
-        <!-- Pont côté gauche uniquement (fosse de 65 mm à droite en x = 6.15) -->
-        <collision name="left_bridge_col">
-          <pose>6.16 1.675 0.0125 0 0 0</pose>
-          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="left_bridge_vis">
-          <pose>6.16 1.675 0.0125 0 0 0</pose>
-          <geometry><box><size>0.12 0.45 0.025</size></box></geometry>
-          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
-        </visual>
-
-        <!-- Dalle de sortie -->
-        <collision name="exit_pad_col">
-          <pose>6.35 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.28 0.90 0.025</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="exit_pad_vis">
-          <pose>6.35 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>0.28 0.90 0.025</size></box></geometry>
-          <material><ambient>0.55 0.25 0.55 1</ambient><diffuse>0.65 0.32 0.65 1</diffuse></material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- EMBÛCHE 5 : Poutre étroite surélevée (largeur 38 cm < voie du robot) -->
-    <model name="left_course_narrow_beam">
-      <static>true</static>
-      <link name="link">
-        <!-- Marche d'accès -->
-        <collision name="beam_entry_col">
-          <pose>6.85 1.45 0.006 0 0 0</pose>
-          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="beam_entry_vis">
-          <pose>6.85 1.45 0.006 0 0 0</pose>
-          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
-          <material><ambient>0.75 0.18 0.22 1</ambient><diffuse>0.85 0.22 0.26 1</diffuse></material>
-        </visual>
-
-        <!-- Poutre centrale étroite (0.38 m de large, 1.10 m de long, 25 mm de haut) -->
-        <collision name="beam_main_col">
-          <pose>7.48 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>1.10 0.38 0.025</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="beam_main_vis">
-          <pose>7.48 1.45 0.0125 0 0 0</pose>
-          <geometry><box><size>1.10 0.38 0.025</size></box></geometry>
-          <material><ambient>0.68 0.14 0.18 1</ambient><diffuse>0.78 0.18 0.22 1</diffuse></material>
-        </visual>
-
-        <!-- Marche de sortie -->
-        <collision name="beam_exit_col">
-          <pose>8.11 1.45 0.006 0 0 0</pose>
-          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
-          <surface><friction><ode><mu>0.85</mu><mu2>0.85</mu2></ode></friction></surface>
-        </collision>
-        <visual name="beam_exit_vis">
-          <pose>8.11 1.45 0.006 0 0 0</pose>
-          <geometry><box><size>0.16 0.50 0.012</size></box></geometry>
-          <material><ambient>0.75 0.18 0.22 1</ambient><diffuse>0.85 0.22 0.26 1</diffuse></material>
+        <visual name="step7_down_vis">
+          <pose>-4.74 -1.50 0.060 0 0 0</pose>
+          <geometry><box><size>0.28 1.00 0.200</size></box></geometry>
+          <material><ambient>0.65 0.62 0.58 1</ambient><diffuse>0.75 0.72 0.68 1</diffuse></material>
         </visual>
       </link>
     </model>
